@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using YourTale.Application.Helpers;
 using YourTale.Domain.Contracts.Repositories;
 using YourTale.Domain.Models;
 using YourTale.Infrastructure.Data;
@@ -18,24 +19,24 @@ public class UserRepository : IUserRepository
         _users = _context.Users;
     }
     
-    public User? GetUser(string email, string password)
+    public Task<User?> GetUser(string email, string password)
     {
-        return _users.FirstOrDefault(x =>
-            string.Equals(x.Email, email, StringComparison.CurrentCultureIgnoreCase)
-            && string.Equals(x.Password, Hash(password)));
+        return _users.FirstOrDefaultAsync(x =>
+            string.Equals(x.Email, email)
+            && string.Equals(x.Password, Hash.Md5Hash(password)));
     }
 
-    private static string Hash(string input)
+    public async Task<User> Add(User user)
     {
-        using var md5Hash = MD5.Create();
-        var data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
-        var sBuilder = new StringBuilder();
-        
-        foreach (var t in data)
-        {
-            sBuilder.Append(t.ToString("x2"));
-        }
-        
-        return sBuilder.ToString();
+        _context.Users.Add(user);
+        await _context.SaveChangesAsync();
+        return user;
     }
+
+    public Task<bool> ExistsByEmail(string email)
+    {
+        return _users.AnyAsync(user => user.Email.Equals(email));
+    }
+
+   
 }

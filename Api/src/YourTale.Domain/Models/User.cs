@@ -9,15 +9,14 @@ public class User
     public string NickName { get; private set; }
     public DateTime BirthDate { get; private set; }
     public string Cep { get; private set; }
-    public string Password { get; private set; }
+    public string Password { get; set; }
     public string Picture { get; private set; }
-    public string Role { get; private set; }
-    public IList<Post> Posts { get; set; }
+    public string Role { get; set; }
+    public virtual IList<Post> Posts { get; set; }
     
+    public virtual IList<FriendRequest> FriendRequestsReceived { get; set; }
     
-    public IList<FriendRequest> FriendRequestsReceived { get; set; }
-    
-    public IList<FriendRequest> FriendRequestsSent { get; set; }
-    public IList<Like> Likes { get; set; }
-    public IList<Comment> Comments { get; set; }
+    public virtual IList<FriendRequest> FriendRequestsSent { get; set; }
+    public virtual IList<Like> Likes { get; set; }
+    public virtual IList<Comment> Comments { get; set; }
 }

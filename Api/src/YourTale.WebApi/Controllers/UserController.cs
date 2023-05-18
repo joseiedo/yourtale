@@ -23,9 +23,9 @@ public class UserController : ControllerBase
     [HttpPost]
     [Route("/login")]
     [AllowAnonymous]
-    public IActionResult Login([FromBody] UserLoginRequest request)
+    public async Task<IActionResult> Login([FromBody] UserLoginRequest request)
     {
-        var loginResponse = _userService.ValidateLogin(request);
+        var loginResponse = await _userService.ValidateLogin(request);
        
         if (!loginResponse.IsAuthenticated)
             return BadRequest("Usuário e/ou senha inválidos");
@@ -39,5 +39,12 @@ public class UserController : ControllerBase
         });
     }
     
-
+    [HttpPost]
+    [Route("/register")]
+    [AllowAnonymous]
+    public async Task<IActionResult> Register([FromBody] UserRegisterRequest request)
+    {
+        var response = await _userService.RegisterUser(request);
+        return Ok(response);
+    }
 }
