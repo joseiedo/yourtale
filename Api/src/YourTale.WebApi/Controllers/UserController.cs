@@ -2,8 +2,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Security;
 using YourTale.Application.Contracts;
-using YourTale.Application.Contracts.Documents.Requests;
+using YourTale.Application.Contracts.Documents.Requests.Post;
 using YourTale.Application.Contracts.Documents.Requests.User;
+using YourTale.Application.Contracts.Documents.Responses.Core;
 
 namespace WebApplication1.Controllers;
 
@@ -11,13 +12,15 @@ namespace WebApplication1.Controllers;
 [ApiController]
 public class UserController : ControllerBase
 {
+    private readonly IPostService _postService;
     private readonly TokenService _tokenService;
     private readonly IUserService _userService;
 
-    public UserController(IUserService userService, TokenService tokenService)
+    public UserController(IUserService userService, IPostService postService, TokenService tokenService)
     {
         _userService = userService;
         _tokenService = tokenService;
+        _postService = postService;
     }
 
     [HttpPost]
@@ -45,10 +48,24 @@ public class UserController : ControllerBase
     public async Task<IActionResult> Register([FromBody] UserRegisterRequest request)
     {
         var response = await _userService.RegisterUser(request);
-        
-        if(!response.IsValid())
-            return BadRequest(response.Notifications);
+
+        if (!response.IsValid())
+            return BadRequest(new ErrorResponse(response.Notifications));
 
         return Ok(response);
+    }
+
+
+    [HttpPost]
+    [Route("/post")]
+    [Authorize]
+    public async Task<IActionResult> Post([FromBody] CreatePostRequest request)
+    {
+        var response = await _postService.CreatePost(request);
+
+        if (!response.IsValid())
+            return BadRequest(new ErrorResponse(response.Notifications));
+
+        return Ok(response.Post);
     }
 }

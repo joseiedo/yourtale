@@ -1,6 +1,5 @@
 using AutoMapper;
 using YourTale.Application.Contracts;
-using YourTale.Application.Contracts.Documents.Requests;
 using YourTale.Application.Contracts.Documents.Requests.User;
 using YourTale.Application.Contracts.Documents.Responses.Core;
 using YourTale.Application.Contracts.Documents.Responses.User;
@@ -21,6 +20,7 @@ public class UserService : IUserService
         _mapper = mapper;
     }
 
+
     public async Task<UserLoginResponse> ValidateLogin(UserLoginRequest request)
     {
         var user = await _userRepository.GetUser(request.Email, request.Password);
@@ -35,7 +35,7 @@ public class UserService : IUserService
     public async Task<UserRegisterResponse> RegisterUser(UserRegisterRequest request)
     {
         var response = new UserRegisterResponse();
-        
+
         if (await _userRepository.ExistsByEmail(request.Email))
         {
             response.AddNotification(new Notification("Email já cadastrado"));
@@ -46,12 +46,19 @@ public class UserService : IUserService
         var user = _mapper.Map<User>(request);
         user.Password = Hash.Md5Hash(request.Password);
         user.Role = "USER";
-        
-       
+
+
         var userEntity = await _userRepository.Add(user);
 
         response.User = _mapper.Map<UserDto>(userEntity);
 
         return response;
+    }
+
+    public Task<UserDto> GetUserById(int id)
+    {
+        var user = _userRepository.GetUserById(id);
+
+        return Task.FromResult(_mapper.Map<UserDto>(user));
     }
 }

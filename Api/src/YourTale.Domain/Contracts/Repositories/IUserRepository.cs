@@ -9,4 +9,6 @@ public interface IUserRepository
     Task<User> Add(User user);
 
     Task<bool> ExistsByEmail(string email);
+
+    User? GetUserById(int userId);
 }

@@ -57,8 +57,13 @@ builder.Services.AddDbContext<YourTaleContext>(options =>
 
 builder.Services.AddAutoMapper(typeof(UserProfile));
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IPostRepository, PostRepository>();
+
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<TokenService>();
 
 builder.Services.AddFluentValidationAutoValidation();
