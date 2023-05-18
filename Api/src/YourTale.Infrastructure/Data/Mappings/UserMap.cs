@@ -4,11 +4,10 @@ using YourTale.Domain.Models;
 
 namespace YourTale.Infrastructure.Data.Mappings;
 
-public class UserMap  : IEntityTypeConfiguration<User>
+public class UserMap : IEntityTypeConfiguration<User>
 {
-
     public void Configure(EntityTypeBuilder<User> builder)
-    {       
+    {
         builder.ToTable("User");
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).ValueGeneratedOnAdd();
@@ -23,6 +22,5 @@ public class UserMap  : IEntityTypeConfiguration<User>
         builder
             .HasIndex(x => x.Email, "IX_User_Email")
             .IsUnique();
-        
     }
 }

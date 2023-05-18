@@ -24,7 +24,7 @@ public class LikeMap : IEntityTypeConfiguration<Like>
             .WithMany(x => x.Likes)
             .HasConstraintName("FK_Like_User")
             .OnDelete(DeleteBehavior.Cascade);
-        
+
         builder.HasOne(x => x.Post)
             .WithMany(x => x.Likes)
             .HasConstraintName("FK_Like_Post")

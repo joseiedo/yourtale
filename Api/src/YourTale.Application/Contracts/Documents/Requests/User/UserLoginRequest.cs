@@ -1,4 +1,4 @@
-namespace YourTale.Application.Contracts.Documents.Requests;
+namespace YourTale.Application.Contracts.Documents.Requests.User;
 
 public class UserLoginRequest
 {

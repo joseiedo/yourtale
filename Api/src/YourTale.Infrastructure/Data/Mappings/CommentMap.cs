@@ -9,7 +9,7 @@ public class CommentMap : IEntityTypeConfiguration<Comment>
     public void Configure(EntityTypeBuilder<Comment> builder)
     {
         builder.ToTable("Comment");
-        
+
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.Id).ValueGeneratedOnAdd();
@@ -22,7 +22,7 @@ public class CommentMap : IEntityTypeConfiguration<Comment>
             .HasColumnType("SMALLDATETIME")
             .HasDefaultValueSql("GETDATE()")
             .IsRequired();
-       
+
         builder.HasOne(x => x.User)
             .WithMany(x => x.Comments)
             .HasConstraintName("FK_Comment_Author")

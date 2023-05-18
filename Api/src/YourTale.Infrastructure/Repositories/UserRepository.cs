@@ -1,5 +1,3 @@
-using System.Security.Cryptography;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
 using YourTale.Application.Helpers;
 using YourTale.Domain.Contracts.Repositories;
@@ -14,11 +12,11 @@ public class UserRepository : IUserRepository
     private readonly DbSet<User> _users;
 
     public UserRepository(YourTaleContext context)
-    {   
+    {
         _context = context;
         _users = _context.Users;
     }
-    
+
     public Task<User?> GetUser(string email, string password)
     {
         return _users.FirstOrDefaultAsync(x =>
@@ -37,6 +35,4 @@ public class UserRepository : IUserRepository
     {
         return _users.AnyAsync(user => user.Email.Equals(email));
     }
-
-   
 }

@@ -11,17 +11,17 @@ public class PostMap : IEntityTypeConfiguration<Post>
         builder.ToTable("Post");
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).ValueGeneratedOnAdd();
-        
+
         builder.Property(x => x.Description).IsRequired().HasMaxLength(255);
-        
+
         builder.Property(x => x.Picture).IsRequired().HasMaxLength(512);
-        
+
         builder.Property(x => x.IsPrivate).IsRequired().HasDefaultValue("false");
-        
+
         builder.Property(x => x.CreatedAt)
             .IsRequired()
             .HasMaxLength(60)
-           .HasColumnType("SMALLDATETIME")
+            .HasColumnType("SMALLDATETIME")
             .HasDefaultValueSql("GETDATE()");
 
         builder

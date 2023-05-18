@@ -11,9 +11,9 @@ namespace WebApplication1.Controllers;
 [ApiController]
 public class UserController : ControllerBase
 {
-    private readonly IUserService _userService;
     private readonly TokenService _tokenService;
-   
+    private readonly IUserService _userService;
+
     public UserController(IUserService userService, TokenService tokenService)
     {
         _userService = userService;
@@ -26,25 +26,29 @@ public class UserController : ControllerBase
     public async Task<IActionResult> Login([FromBody] UserLoginRequest request)
     {
         var loginResponse = await _userService.ValidateLogin(request);
-       
+
         if (!loginResponse.IsAuthenticated)
             return BadRequest("Usuário e/ou senha inválidos");
-       
+
         var token = _tokenService.GenerateToken(loginResponse);
-         
-        return Ok( new
+
+        return Ok(new
         {
             user = loginResponse,
             token
         });
     }
-    
+
     [HttpPost]
     [Route("/register")]
     [AllowAnonymous]
     public async Task<IActionResult> Register([FromBody] UserRegisterRequest request)
     {
         var response = await _userService.RegisterUser(request);
+        
+        if(!response.IsValid())
+            return BadRequest(response.Notifications);
+
         return Ok(response);
     }
 }
