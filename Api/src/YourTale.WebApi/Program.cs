@@ -1,5 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using YourTale.Application.Contracts;
+using YourTale.Application.Implementations;
+using YourTale.Domain.Contracts.Repositories;
 using YourTale.Infrastructure.Data;
+using YourTale.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,8 +14,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<YourTaleContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<YourTaleContext>(options => 
+    options.UseLazyLoadingProxies().UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 
 var app = builder.Build();
