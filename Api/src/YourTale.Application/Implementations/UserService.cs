@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using YourTale.Application.Contracts;
 using YourTale.Application.Contracts.Documents.Requests.User;
 using YourTale.Application.Contracts.Documents.Responses.Core;
@@ -13,12 +14,24 @@ public class UserService : IUserService
 {
     private readonly IMapper _mapper;
     private readonly IUserRepository _userRepository;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    
 
-    public UserService(IMapper mapper, IUserRepository userRepository)
+    public UserService(IMapper mapper, IHttpContextAccessor httpContextAccessor, IUserRepository userRepository)
     {
         _userRepository = userRepository;
+        _httpContextAccessor = httpContextAccessor;
         _mapper = mapper;
     }
+
+    public User GetAuthenticatedUser()
+    {
+        var authenticatedUserId =
+            _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == "Id")?.Value;
+        
+        return _userRepository.GetUserById(int.Parse(authenticatedUserId))!;
+    }
+    
 
 
     public async Task<UserLoginResponse> ValidateLogin(UserLoginRequest request)
@@ -55,6 +68,7 @@ public class UserService : IUserService
         return response;
     }
 
+    
     public Task<UserDto> GetUserById(int id)
     {
         var user = _userRepository.GetUserById(id);

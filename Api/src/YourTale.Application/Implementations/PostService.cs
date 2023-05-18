@@ -11,32 +11,27 @@ namespace YourTale.Application.Implementations;
 
 public class PostService : IPostService
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IMapper _mapper;
+    private readonly IFriendRequestRepository _friendRequestRepository; 
     private readonly IPostRepository _postRepository;
-    private readonly IUserRepository _userRepository;
+    private readonly IUserService _userService;
 
-    public PostService(IMapper mapper, IHttpContextAccessor httpContextAccessor, IPostRepository postRepository,
-        IUserRepository userRepository)
+    public PostService(IMapper mapper, 
+        IPostRepository postRepository, 
+        IFriendRequestRepository friendRequestRepository,
+        IUserService userService
+    )
     {
         _postRepository = postRepository;
-        _userRepository = userRepository;
-        _httpContextAccessor = httpContextAccessor;
+        _userService = userService;
+        _friendRequestRepository = friendRequestRepository;
         _mapper = mapper;
     }
 
     public async Task<CreatePostResponse> CreatePost(CreatePostRequest request)
     {
         var response = new CreatePostResponse();
-        var authenticatedUserId =
-            _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == "Id")?.Value;
-        var author = _userRepository.GetUserById(int.Parse(authenticatedUserId));
-
-        if (author is null)
-        {
-            response.AddNotification(new Notification("Usuário não encontrado."));
-            return response;
-        }
+        var author = _userService.GetAuthenticatedUser(); 
 
 
         var post = _mapper.Map<Post>(request);
@@ -47,4 +42,20 @@ public class PostService : IPostService
 
         return response;
     }
+   
+    public async Task<Pageable<PostDto>> GetPosts(int page = 1, int take = 6)
+    {
+        var user = _userService.GetAuthenticatedUser();
+        var friends = _friendRequestRepository.GetFriends(user.Id);
+
+        var posts = await _postRepository.GetPosts(friends, user.Id, page, take);
+
+        return new Pageable<PostDto>
+        {
+            Content = _mapper.Map<List<PostDto>>(posts),
+            Page = page,
+            IsLastPage = posts.Count < take,
+        };
+    }
+    
 }
