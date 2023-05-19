@@ -1,3 +1,4 @@
+using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using YourTale.Domain.Models;
@@ -21,8 +22,7 @@ public class PostMap : IEntityTypeConfiguration<Post>
         builder.Property(x => x.CreatedAt)
             .IsRequired()
             .HasMaxLength(60)
-            .HasColumnType("SMALLDATETIME")
-            .HasDefaultValueSql("GETDATE()");
+            .HasColumnType("SMALLDATETIME");
 
         builder
             .HasOne(x => x.Author)

@@ -5,6 +5,8 @@ using YourTale.Application.Contracts;
 using YourTale.Application.Contracts.Documents.Requests.Post;
 using YourTale.Application.Contracts.Documents.Requests.User;
 using YourTale.Application.Contracts.Documents.Responses.Core;
+using YourTale.Application.Contracts.Documents.Responses.User;
+using YourTale.Application.Implementations;
 
 namespace WebApplication1.Controllers;
 
@@ -15,12 +17,14 @@ public class UserController : ControllerBase
     private readonly IPostService _postService;
     private readonly TokenService _tokenService;
     private readonly IUserService _userService;
+    private readonly IFriendRequestService _friendRequestService;
 
-    public UserController(IUserService userService, IPostService postService, TokenService tokenService)
+    public UserController(IUserService userService, IPostService postService, TokenService tokenService, IFriendRequestService friendRequestService)
     {
         _userService = userService;
         _tokenService = tokenService;
         _postService = postService;
+        _friendRequestService = friendRequestService;
     }
 
     [HttpPost]
@@ -67,5 +71,39 @@ public class UserController : ControllerBase
             return BadRequest(new ErrorResponse(response.Notifications));
 
         return Ok(response.Post);
+    }
+
+
+    [HttpGet]
+    [Route("/me")]
+    [Authorize]
+    public IActionResult GetAuthenticatedUserDetails()
+    {
+        var response =  _userService.GetAuthenticatedUserDetails();
+
+        return Ok(response);
+    }
+    
+    [HttpPost]
+    [Route("/friend-requests/{friendId:int}")]
+    [Authorize]
+    public async Task<IActionResult> AddFriend(int friendId)
+    {
+        var response = await _friendRequestService.AddFriend(friendId); 
+
+        if (!response.IsValid())
+            return BadRequest(new ErrorResponse(response.Notifications));
+
+        return Ok(response.FriendRequest);
+    }
+
+    [HttpGet]
+    [Route("/friend-requests")]
+    [Authorize]
+    public async Task<IActionResult> GetFriendRequests()
+    {
+        var response = await _friendRequestService.GetFriendRequests();
+        
+        return Ok(response);
     }
 }

@@ -56,6 +56,8 @@ builder.Services.AddDbContext<YourTaleContext>(options =>
     options.UseLazyLoadingProxies().UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddAutoMapper(typeof(UserProfile));
+builder.Services.AddAutoMapper(typeof(PostProfile));
+builder.Services.AddAutoMapper(typeof(FriendRequestProfile));
 
 builder.Services.AddHttpContextAccessor();
 

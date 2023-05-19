@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace YourTale.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialProject : Migration
+    public partial class YourTaleV001 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -40,7 +40,7 @@ namespace YourTale.Infrastructure.Migrations
                     UserId = table.Column<int>(type: "INTEGER", nullable: false),
                     FriendId = table.Column<int>(type: "INTEGER", nullable: false),
                     IsAccepted = table.Column<bool>(type: "INTEGER", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "SMALLDATETIME", maxLength: 60, nullable: false, defaultValueSql: "GETDATE()"),
+                    CreatedAt = table.Column<DateTime>(type: "SMALLDATETIME", maxLength: 60, nullable: false),
                     AcceptedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
                     RejectedAt = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
@@ -67,11 +67,11 @@ namespace YourTale.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    AuthorId = table.Column<int>(type: "INTEGER", nullable: false),
                     Description = table.Column<string>(type: "TEXT", maxLength: 255, nullable: false),
                     Picture = table.Column<string>(type: "TEXT", maxLength: 512, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "SMALLDATETIME", maxLength: 60, nullable: false, defaultValueSql: "GETDATE()"),
-                    IsPrivate = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: false)
+                    CreatedAt = table.Column<DateTime>(type: "SMALLDATETIME", maxLength: 60, nullable: false),
+                    IsPrivate = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: false),
+                    AuthorId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -93,7 +93,7 @@ namespace YourTale.Infrastructure.Migrations
                     UserId = table.Column<int>(type: "INTEGER", nullable: false),
                     PostId = table.Column<int>(type: "INTEGER", nullable: false),
                     Description = table.Column<string>(type: "TEXT", maxLength: 120, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "SMALLDATETIME", nullable: false, defaultValueSql: "GETDATE()")
+                    CreatedAt = table.Column<DateTime>(type: "SMALLDATETIME", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -120,7 +120,7 @@ namespace YourTale.Infrastructure.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     UserId = table.Column<int>(type: "INTEGER", nullable: false),
                     PostId = table.Column<int>(type: "INTEGER", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "SMALLDATETIME", maxLength: 60, nullable: false, defaultValueSql: "GETDATE()")
+                    CreatedAt = table.Column<DateTime>(type: "SMALLDATETIME", maxLength: 60, nullable: false)
                 },
                 constraints: table =>
                 {

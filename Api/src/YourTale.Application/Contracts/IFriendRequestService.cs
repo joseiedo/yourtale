@@ -1,13 +1,15 @@
+using YourTale.Application.Contracts.Documents.Responses.FriendRequest;
+
 namespace YourTale.Application.Contracts;
 
 public interface IFriendRequestService
 {
    
-    Task SendFriendRequest(int friendId);
+    Task<AddFriendResponse> AddFriend(int friendId);
     
-    Task AcceptFriendRequest(int friendRequestId);
+    void AcceptFriendRequest(int friendRequestId);
     
-    Task DeclineFriendRequest(int friendRequestId);
-    
-    
+    void DeclineFriendRequest(int friendRequestId);
+
+    Task<List<FriendRequestDto>> GetFriendRequests();
 }

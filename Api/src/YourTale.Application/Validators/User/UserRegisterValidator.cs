@@ -7,7 +7,7 @@ public class UserRegisterValidator : AbstractValidator<UserRegisterRequest>
 {
     public UserRegisterValidator()
     {
-        RuleFor(x => x.Fullname).NotEmpty().WithMessage("O nome completo é obrigatório").MaximumLength(255);
+        RuleFor(x => x.FullName).NotEmpty().WithMessage("O nome completo é obrigatório").MaximumLength(255);
         RuleFor(x => x.Email).EmailAddress().WithMessage("O email informado não é válido");
         RuleFor(x => x.Nickname).MaximumLength(50).WithMessage("O apelido deve ter até 50 caracteres");
         RuleFor(x => x.BirthDate).NotEmpty().WithMessage("A data de nascimento é obrigatória");

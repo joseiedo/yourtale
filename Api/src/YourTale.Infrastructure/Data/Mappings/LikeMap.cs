@@ -1,3 +1,4 @@
+using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using YourTale.Domain.Models;
@@ -17,8 +18,7 @@ public class LikeMap : IEntityTypeConfiguration<Like>
         builder.Property(x => x.CreatedAt)
             .IsRequired()
             .HasColumnType("SMALLDATETIME")
-            .HasMaxLength(60)
-            .HasDefaultValueSql("GETDATE()");
+            .HasMaxLength(60);
 
         builder.HasOne(x => x.User)
             .WithMany(x => x.Likes)

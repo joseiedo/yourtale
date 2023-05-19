@@ -1,3 +1,4 @@
+using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using YourTale.Domain.Models;
@@ -20,7 +21,6 @@ public class CommentMap : IEntityTypeConfiguration<Comment>
 
         builder.Property(x => x.CreatedAt)
             .HasColumnType("SMALLDATETIME")
-            .HasDefaultValueSql("GETDATE()")
             .IsRequired();
 
         builder.HasOne(x => x.User)

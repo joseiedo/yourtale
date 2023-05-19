@@ -11,14 +11,18 @@ using YourTale.Infrastructure.Data;
 namespace YourTale.Infrastructure.Migrations
 {
     [DbContext(typeof(YourTaleContext))]
-    [Migration("20230518011823_InitialProject")]
-    partial class InitialProject
+    [Migration("20230518232838_YourTaleV0.0.1")]
+    partial class YourTaleV001
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true);
 
             modelBuilder.Entity("YourTale.Domain.Models.Comment", b =>
                 {
@@ -27,9 +31,7 @@ namespace YourTale.Infrastructure.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("SMALLDATETIME")
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasColumnType("SMALLDATETIME");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -61,10 +63,8 @@ namespace YourTale.Infrastructure.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
                         .HasMaxLength(60)
-                        .HasColumnType("SMALLDATETIME")
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasColumnType("SMALLDATETIME");
 
                     b.Property<int>("FriendId")
                         .HasColumnType("INTEGER");
@@ -94,10 +94,8 @@ namespace YourTale.Infrastructure.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
                         .HasMaxLength(60)
-                        .HasColumnType("SMALLDATETIME")
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasColumnType("SMALLDATETIME");
 
                     b.Property<int>("PostId")
                         .HasColumnType("INTEGER");
@@ -124,10 +122,8 @@ namespace YourTale.Infrastructure.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
                         .HasMaxLength(60)
-                        .HasColumnType("SMALLDATETIME")
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasColumnType("SMALLDATETIME");
 
                     b.Property<string>("Description")
                         .IsRequired()

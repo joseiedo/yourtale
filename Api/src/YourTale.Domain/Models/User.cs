@@ -2,14 +2,14 @@ namespace YourTale.Domain.Models;
 
 public class User
 {
-    public int Id { get; }
-    public string FullName { get; }
-    public string Email { get; }
-    public string NickName { get; }
-    public DateTime BirthDate { get; }
-    public string Cep { get; }
+    public int Id { get; set; }
+    public string FullName { get; set; }
+    public string Email { get; set; }
+    public string NickName { get; set; }
+    public DateTime BirthDate { get; set; }
+    public string Cep { get; set; }
     public string Password { get; set; }
-    public string Picture { get; }
+    public string Picture { get; set; }
     public string Role { get; set; }
     public virtual IList<Post> Posts { get; set; }
 

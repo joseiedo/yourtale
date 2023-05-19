@@ -8,7 +8,7 @@ public interface IUserService
 {
     Task<UserLoginResponse> ValidateLogin(UserLoginRequest request);
     Task<UserRegisterResponse> RegisterUser(UserRegisterRequest request);
-
+    UserDto GetAuthenticatedUserDetails();
     User GetAuthenticatedUser();
 
     

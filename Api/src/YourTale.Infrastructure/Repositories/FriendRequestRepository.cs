@@ -32,4 +32,28 @@ public class FriendRequestRepository : IFriendRequestRepository
             .Select(x =>  x.UserId == userId ? x.Friend : x.User)
             .ToList();
     }
+
+    public FriendRequest? GetById(int friendRequestId)
+    {
+        return _friendRequests.SingleOrDefault(x => x.Id == friendRequestId);
+    }
+
+    public async Task SaveAllChanges()
+    {
+        await _context.SaveChangesAsync();
+    }
+
+    public bool FriendRequestAlreadyExists(int userId, int friendId)
+    {
+        return _friendRequests.Any(x => x.UserId == userId && x.FriendId == friendId);
+    }
+
+    public Task<List<FriendRequest>> GetFriendRequests(int userId)
+    {
+
+        return _friendRequests
+            .Where(x => x.FriendId == userId && x.IsAccepted == false)
+            .ToListAsync()
+            ;
+    }
 }
