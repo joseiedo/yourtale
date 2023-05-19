@@ -10,7 +10,7 @@ public interface IFriendRequestService
 
     Task<AcceptFriendResponse> AcceptFriendRequest(int friendRequestId);
 
-    void DeclineFriendRequest(int friendRequestId);
+    DeclineFriendResponse DeclineFriendRequest(int friendRequestId);
 
     Task<List<FriendRequestDto>> GetFriendRequests();
 

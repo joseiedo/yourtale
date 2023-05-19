@@ -1,3 +1,4 @@
+using System.Net;
 using System.Text;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -5,6 +6,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Polly;
+using Polly.Retry;
 using WebApplication1.Security;
 using YourTale.Application.Contracts;
 using YourTale.Application.Implementations;
@@ -74,6 +77,19 @@ builder.Services.AddScoped<TokenService>();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining(typeof(UserRegisterValidator));
 
+
+builder.Services.AddHttpClient<IAddressRepository, AddressRepository>(client =>
+{
+    client.BaseAddress = new Uri("https://viacep.com.br");
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+    client.DefaultRequestHeaders.Add("Connection", "keep-alive");
+    client.DefaultRequestHeaders.Add("Accept-Encoding", new List<string>
+        { "gzip", "deflate", "br" });
+}).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+{
+    AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+}).AddPolicyHandler(CreatePolicy(3));
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -107,3 +123,14 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+static AsyncRetryPolicy<HttpResponseMessage> CreatePolicy(int retryCount)
+{
+    return Policy
+        .HandleResult<HttpResponseMessage>(r => !r.IsSuccessStatusCode)
+        .RetryAsync(retryCount, onRetry: (message, retryCount) =>
+        {
+            var msg = $"Retentativa: {retryCount}";
+            Console.Out.WriteLineAsync(msg);
+        });
+}

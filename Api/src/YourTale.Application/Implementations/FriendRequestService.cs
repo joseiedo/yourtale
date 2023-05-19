@@ -84,16 +84,24 @@ public class FriendRequestService : IFriendRequestService
         return response;
     }
 
-    public void DeclineFriendRequest(int friendRequestId)
+    public DeclineFriendResponse DeclineFriendRequest(int friendRequestId)
     {
+        var response = new DeclineFriendResponse();
         var friendRequest = _friendRequestRepository.GetById(friendRequestId);
 
         if (friendRequest is null)
-            // TODO: retornar erro
-            return;
+        {
+            response.AddNotification(new Notification("Solicitação de amizade inválida"));
+            return response;
+        }
+            
 
         friendRequest.RejectedAt = DateTime.Now;
         _friendRequestRepository.SaveAllChanges();
+        
+        response.FriendRequest = _mapper.Map<FriendRequestDto>(friendRequest);
+
+        return response;
     }
 
     public async Task<List<FriendRequestDto>> GetFriendRequests()
