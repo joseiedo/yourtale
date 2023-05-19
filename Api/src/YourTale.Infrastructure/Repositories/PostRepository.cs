@@ -18,10 +18,10 @@ public class PostRepository : IPostRepository
 
     public async Task<Post> Add(Post post)
     {
-        var entity = _posts.Add(post).Entity;
+         _posts.Add(post);
         await _context.SaveChangesAsync();
 
-        return entity;
+        return post;
     }
 
 
@@ -46,5 +46,10 @@ public class PostRepository : IPostRepository
             .Skip((page - 1) * take)
             .Take(take)
             .ToListAsync();
+    }
+
+    public Post? GetById(int postId)
+    {
+        return _posts.FirstOrDefault(x => x.Id == postId);
     }
 }

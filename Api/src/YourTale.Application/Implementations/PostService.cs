@@ -14,19 +14,23 @@ public class PostService : IPostService
     private readonly IMapper _mapper;
     private readonly IPostRepository _postRepository;
     private readonly IUserService _userService;
+    private readonly ILikeRepository _likeRepository;
 
     public PostService(IMapper mapper,
         IPostRepository postRepository,
         IFriendRequestRepository friendRequestRepository,
+        ILikeRepository likeRepository,
         IUserService userService
     )
     {
         _postRepository = postRepository;
+        _likeRepository = likeRepository;
         _userService = userService;
         _friendRequestRepository = friendRequestRepository;
         _mapper = mapper;
     }
-
+    
+    
     public async Task<CreatePostResponse> CreatePost(CreatePostRequest request)
     {
         var response = new CreatePostResponse();
@@ -42,18 +46,70 @@ public class PostService : IPostService
         return response;
     }
 
-    public async Task<Pageable<PostDto>> GetPosts(int page = 1, int take = 6)
+    public async Task LikePost(int postId)
+    {
+        var post = _postRepository.GetById(postId);
+        var user = _userService.GetAuthenticatedUser();
+        
+        if (post is null)
+        {
+            // TODO: return 
+        }
+
+        if (_likeRepository.IsLiked(user.Id, postId))
+        {
+            // TODO: return
+        }
+
+        var likeEntity = new Like
+        {
+            CreatedAt = DateTime.Now,
+            Post = post,
+            User = user
+        };
+        
+        await _likeRepository.Add(likeEntity);
+    }
+
+    public void  UnlikePost(int postId)
+    {
+        
+        var post = _postRepository.GetById(postId);
+        var user = _userService.GetAuthenticatedUser();
+        
+        if (post is null)
+        {
+            // TODO: return 
+        }
+
+        if (_likeRepository.IsLiked(user.Id, postId))
+        {
+            // TODO: return
+        }
+
+        _likeRepository.RemoveById(user.Id, postId);
+    }
+
+    public async Task<Pageable<PostDto>> GetPosts(int page, int take)
     {
         var user = _userService.GetAuthenticatedUser();
         var friends = _friendRequestRepository.GetFriends(user.Id);
 
         var posts = await _postRepository.GetPosts(friends, user.Id, page, take);
 
+        var postsDtos = posts.Select(p =>
+        {
+            var postDto = _mapper.Map<PostDto>(p);
+            postDto.IsLiked = _likeRepository.IsLiked(p.Id, user.Id);
+            return postDto;
+        }).ToList();
+        
         return new Pageable<PostDto>
         {
-            Content = _mapper.Map<List<PostDto>>(posts),
+            Content = postsDtos,
             Page = page,
             IsLastPage = posts.Count < take
         };
     }
+    
 }

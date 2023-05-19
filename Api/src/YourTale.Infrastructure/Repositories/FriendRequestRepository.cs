@@ -18,11 +18,11 @@ public class FriendRequestRepository : IFriendRequestRepository
 
     public async Task<FriendRequest> Add(FriendRequest friendRequest)
     {
-        var entity = (await _friendRequests.AddAsync(friendRequest)).Entity;
+        _friendRequests.Add(friendRequest);
 
         await _context.SaveChangesAsync();
 
-        return entity;
+        return friendRequest;
     }
 
     public List<User?> GetFriends(int userId)

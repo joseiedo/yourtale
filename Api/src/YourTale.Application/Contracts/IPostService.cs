@@ -7,6 +7,10 @@ namespace YourTale.Application.Contracts;
 public interface IPostService
 {
     Task<CreatePostResponse> CreatePost(CreatePostRequest request);
+    
+    Task LikePost(int postId);
+    
+    void UnlikePost(int postId);
 
-    Task<Pageable<PostDto>> GetPosts(int page = 1, int take = 6);
+    Task<Pageable<PostDto>> GetPosts(int page, int take);
 }
