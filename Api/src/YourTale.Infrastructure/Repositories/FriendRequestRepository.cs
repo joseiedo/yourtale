@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using YourTale.Application.Helpers;
 using YourTale.Domain.Contracts.Repositories;
 using YourTale.Domain.Models;
 using YourTale.Infrastructure.Data;
@@ -31,6 +32,18 @@ public class FriendRequestRepository : IFriendRequestRepository
             .Where(x => x.AcceptedAt != null && (x.UserId == userId || x.FriendId == userId))
             .Select(x => x.UserId == userId ? x.Friend : x.User)
             .ToList();
+    }
+    
+    public async Task<List<User?>> GetFriendsByFullNameOrEmailEqual(int userId, string text, int page, int take)
+    {
+        var result = _friendRequests
+            .Where(x => x.AcceptedAt != null && (x.UserId == userId || x.FriendId == userId))
+            .Where(x => x.UserId == userId ? x.Friend!.FullName.Contains(text) || x.Friend.Email.Contains(text) : x.User!.FullName.Contains(text) || x.User.Email.Contains(text)) 
+            .Select(x => x.UserId == userId ? x.Friend : x.User)
+            .Skip((page - 1) * take)
+            .Take(take);
+
+        return await result.ToListAsync();
     }
     
     public Task<bool> IsFriend(int userId, int friendId)

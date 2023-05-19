@@ -144,4 +144,17 @@ public class UserController : ControllerBase
 
         return Ok(response);
     }
+    
+    [HttpGet]
+    [Route("friends")]
+    [Authorize]
+    public async Task<IActionResult> GetFriendsByNameOrEmailEquals(
+        [FromQuery] string text = "", 
+        [FromQuery] int page = 1, 
+        [FromQuery] int take = 6)
+    {
+        var response = await _friendRequestService.GetFriendsByNameOrEmailEquals(text, page, take);
+
+        return Ok(response);
+    }
 }

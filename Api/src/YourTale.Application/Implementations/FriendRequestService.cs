@@ -1,7 +1,9 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
 using YourTale.Application.Contracts;
 using YourTale.Application.Contracts.Documents.Responses.Core;
 using YourTale.Application.Contracts.Documents.Responses.FriendRequest;
+using YourTale.Application.Contracts.Documents.Responses.User;
 using YourTale.Domain.Contracts.Repositories;
 using YourTale.Domain.Models;
 
@@ -100,5 +102,19 @@ public class FriendRequestService : IFriendRequestService
         var friendRequests = await _friendRequestRepository.GetFriendRequests(user.Id);
 
         return _mapper.Map<List<FriendRequestDto>>(friendRequests);
+    }
+
+    public async Task<Pageable<UserDto>> GetFriendsByNameOrEmailEquals(string text, int page, int take)
+    {
+        var user = _userService.GetAuthenticatedUser();
+        var friends = await _friendRequestRepository.GetFriendsByFullNameOrEmailEqual(user.Id, text, page, take);
+
+        return new Pageable<UserDto>
+        {
+            Content = _mapper.Map<List<UserDto>>(friends),
+            Page = page,
+            IsLastPage = friends.Count < take
+        };
+
     }
 }
