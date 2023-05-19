@@ -11,4 +11,5 @@ public interface IUserRepository
     Task<bool> ExistsByEmail(string email);
 
     User? GetUserById(int userId);
+    Task SaveAll();
 }

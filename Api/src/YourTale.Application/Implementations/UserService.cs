@@ -15,12 +15,16 @@ public class UserService : IUserService
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IMapper _mapper;
     private readonly IUserRepository _userRepository;
+    private readonly IFriendRequestRepository _friendRequestRepository;
 
 
-    public UserService(IMapper mapper, IHttpContextAccessor httpContextAccessor, IUserRepository userRepository)
+    public UserService(IMapper mapper, IHttpContextAccessor httpContextAccessor, IUserRepository userRepository,
+    IFriendRequestRepository friendRequestRepository
+    )
     {
         _userRepository = userRepository;
         _httpContextAccessor = httpContextAccessor;
+        _friendRequestRepository = friendRequestRepository;
         _mapper = mapper;
     }
 
@@ -29,7 +33,7 @@ public class UserService : IUserService
         var authenticatedUserId =
             _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == "Id")?.Value;
 
-        return _userRepository.GetUserById(int.Parse(authenticatedUserId))!;
+        return _userRepository.GetUserById(int.Parse(authenticatedUserId!))!;
     }
 
     public UserDto GetAuthenticatedUserDetails()
@@ -70,6 +74,49 @@ public class UserService : IUserService
 
         response.User = _mapper.Map<UserDto>(userEntity);
 
+        return response;
+    }
+
+    public async Task<UserEditResponse> EditUser(UserEditRequest request)
+    {
+        var response = new UserEditResponse();
+        
+        var user = _userRepository.GetUserById(request.UserId);
+        
+        if (user is null)
+        {
+            response.AddNotification(new Notification("Usuário inválido"));
+            return response;
+        }
+        
+        user.NickName = request.Nickname;
+        user.Picture = request.Picture;
+
+        await _userRepository.SaveAll();
+        
+        response.User = _mapper.Map<UserDto>(user);
+        
+        return response;
+    }
+
+    public async Task<GetUserByIdResponse> GetUserById(int id)
+    {
+        var response = new GetUserByIdResponse();
+        var authenticatedUser = GetAuthenticatedUser();
+        var user = _userRepository.GetUserById(id);
+
+        if (user is null)
+        {
+            response.AddNotification(new Notification("Usuário inválido"));
+            return response;
+        }
+        
+        var isFriend = await _friendRequestRepository.IsFriend(authenticatedUser.Id, user.Id);
+        
+        response.IsFriend = isFriend; 
+        response.IsLoggedUser = user.Id == authenticatedUser.Id;
+        response.User = _mapper.Map<UserDto>(user);
+        
         return response;
     }
 }

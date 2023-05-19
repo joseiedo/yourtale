@@ -8,11 +8,13 @@ public interface IPostService
 {
     Task<CreatePostResponse> CreatePost(CreatePostRequest request);
     
-    Task LikePost(int postId);
+    Task<LikePostResponse> LikePost(int postId);
     
-    void UnlikePost(int postId);
+    Task<UnlikePostResponse> UnlikePost(int postId);
 
     Task<Pageable<PostDto>> GetPosts(int page, int take);
     
     Task<Pageable<PostDto>> GetPostsByUserId(int userId, int page, int take);
+
+    Task<EditPostResponse> EditPost(EditPostRequest request);
 }

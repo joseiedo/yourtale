@@ -10,4 +10,7 @@ public interface IUserService
     Task<UserRegisterResponse> RegisterUser(UserRegisterRequest request);
     UserDto GetAuthenticatedUserDetails();
     User GetAuthenticatedUser();
+    Task<UserEditResponse> EditUser(UserEditRequest request);
+    
+    Task<GetUserByIdResponse> GetUserById(int id); 
 }

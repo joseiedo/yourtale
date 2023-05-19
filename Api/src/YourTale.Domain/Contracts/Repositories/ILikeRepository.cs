@@ -8,5 +8,5 @@ public interface ILikeRepository
     
     Task<Like> Add(Like like);
 
-    void RemoveById(int userId, int postId);
+    Task RemoveById(int userId, int postId);
 }

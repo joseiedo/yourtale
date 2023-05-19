@@ -11,4 +11,6 @@ public interface IFriendRequestRepository
     Task SaveAllChanges();
     bool FriendRequestAlreadyExists(int userId, int friendId);
     Task<List<FriendRequest>> GetFriendRequests(int userId);
+
+    Task<bool> IsFriend(int userId, int friendId);
 }

@@ -40,4 +40,9 @@ public class UserRepository : IUserRepository
     {
         return _users.FirstOrDefault(user => user.Id == userId);
     }
+
+    public async Task SaveAll()
+    {
+        await _context.SaveChangesAsync();
+    }
 }

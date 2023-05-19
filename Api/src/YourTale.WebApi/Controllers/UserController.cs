@@ -27,7 +27,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    [Route("/login")]
+    [Route("login")]
     [AllowAnonymous]
     public async Task<IActionResult> Login([FromBody] UserLoginRequest request)
     {
@@ -44,9 +44,22 @@ public class UserController : ControllerBase
             token
         });
     }
+    
+    [HttpGet]
+    [Route("{id:int}")]
+    [Authorize]
+    public async Task<IActionResult> GetUserById(int id)
+    {
+        var response = await _userService.GetUserById(id);
+
+        if (!response.IsValid())
+            return BadRequest(new ErrorResponse(response.Notifications));
+
+        return Ok(response);
+    }
 
     [HttpPost]
-    [Route("/register")]
+    [Route("register")]
     [AllowAnonymous]
     public async Task<IActionResult> Register([FromBody] UserRegisterRequest request)
     {
@@ -60,7 +73,7 @@ public class UserController : ControllerBase
 
 
     [HttpPost]
-    [Route("/post")]
+    [Route("post")]
     [Authorize]
     public async Task<IActionResult> Post([FromBody] CreatePostRequest request)
     {
@@ -74,7 +87,7 @@ public class UserController : ControllerBase
 
 
     [HttpGet]
-    [Route("/me")]
+    [Route("me")]
     [Authorize]
     public IActionResult GetAuthenticatedUserDetails()
     {
@@ -83,8 +96,21 @@ public class UserController : ControllerBase
         return Ok(response);
     }
 
+    [HttpPut]
+    [Route("me")]
+    [Authorize]
+    public async Task<IActionResult> EditUser([FromBody] UserEditRequest request)
+    {
+        var response = await _userService.EditUser(request);
+
+        if (!response.IsValid())
+            return BadRequest(new ErrorResponse(response.Notifications));
+
+        return Ok(response.User);
+    }
+    
     [HttpPost]
-    [Route("/friend-requests/{friendId:int}")]
+    [Route("friend-requests/{friendId:int}")]
     [Authorize]
     public async Task<IActionResult> AddFriend(int friendId)
     {
@@ -97,7 +123,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPut]
-    [Route("/friend-requests/{friendRequestId:int}")]
+    [Route("friend-requests/{friendRequestId:int}")]
     [Authorize]
     public async Task<IActionResult> AcceptFriendRequest(int friendRequestId)
     {
@@ -110,7 +136,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
-    [Route("/friend-requests")]
+    [Route("friend-requests")]
     [Authorize]
     public async Task<IActionResult> GetFriendRequests()
     {

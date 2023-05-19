@@ -32,6 +32,12 @@ public class FriendRequestRepository : IFriendRequestRepository
             .Select(x => x.UserId == userId ? x.Friend : x.User)
             .ToList();
     }
+    
+    public Task<bool> IsFriend(int userId, int friendId)
+    {
+        return _friendRequests.AnyAsync(x =>  (x.UserId == userId && x.FriendId == friendId ) || (x.FriendId == userId && x.UserId == friendId) 
+            && x.AcceptedAt != null);
+    }
 
     public FriendRequest? GetById(int friendRequestId)
     {

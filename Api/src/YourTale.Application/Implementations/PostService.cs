@@ -46,19 +46,44 @@ public class PostService : IPostService
         return response;
     }
 
-    public async Task LikePost(int postId)
+    public async Task<EditPostResponse> EditPost(EditPostRequest request)
     {
-        var post = _postRepository.GetById(postId);
-        var user = _userService.GetAuthenticatedUser();
+        var response = new EditPostResponse();
+        
+        var post = _postRepository.GetById(request.PostId);
         
         if (post is null)
         {
-            // TODO: return 
+            response.AddNotification(new Notification("Post inválido"));
+            return response;
+        }
+
+        post.IsPrivate = request.IsPrivate;
+        
+        await _postRepository.SaveAll();
+
+        response.Post = _mapper.Map<PostDto>(post);
+        
+        return response;
+    }
+    
+
+    public async Task<LikePostResponse> LikePost(int postId)
+    {
+        var post = _postRepository.GetById(postId);
+        var user = _userService.GetAuthenticatedUser();
+        var response = new LikePostResponse();
+        
+        if (post is null)
+        {
+            response.AddNotification(new Notification("Post inválido"));
+            return response;
         }
 
         if (_likeRepository.IsLiked(user.Id, postId))
         {
-            // TODO: return
+            response.AddNotification(new Notification("Post já curtido"));
+            return response;
         }
 
         var likeEntity = new Like
@@ -69,25 +94,38 @@ public class PostService : IPostService
         };
         
         await _likeRepository.Add(likeEntity);
+        
+        response.Post = _mapper.Map<PostDto>(post);
+        response.Post.IsLiked = true;
+        
+        return response;
     }
 
-    public void  UnlikePost(int postId)
+    public async Task<UnlikePostResponse> UnlikePost(int postId)
     {
         
         var post = _postRepository.GetById(postId);
         var user = _userService.GetAuthenticatedUser();
+        var response = new UnlikePostResponse();
         
         if (post is null)
         {
-            // TODO: return 
+            response.AddNotification(new Notification("Post inválido"));
+            return response;
         }
 
-        if (_likeRepository.IsLiked(user.Id, postId))
+        if (!_likeRepository.IsLiked(user.Id, postId))
         {
-            // TODO: return
+            response.AddNotification(new Notification("Post já não foi curtido"));
+            return response;
         }
 
-        _likeRepository.RemoveById(user.Id, postId);
+        await _likeRepository.RemoveById(user.Id, postId);
+        
+        response.Post = _mapper.Map<PostDto>(post);
+        response.Post.IsLiked = true;
+        
+        return response;
     }
 
     public async Task<Pageable<PostDto>> GetPosts(int page, int take)

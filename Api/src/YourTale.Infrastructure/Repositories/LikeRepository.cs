@@ -28,7 +28,7 @@ public class LikeRepository : ILikeRepository
         return like;
     }
 
-    public async void RemoveById(int userId, int postId)
+    public async Task RemoveById(int userId, int postId)
     {
         var like = await _likes.FirstOrDefaultAsync(x => x.PostId == postId && x.UserId == userId);
         if (like is null) return;

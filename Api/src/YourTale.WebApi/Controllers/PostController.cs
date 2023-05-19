@@ -27,23 +27,47 @@ public class PostController : ControllerBase
             return BadRequest(new ErrorResponse(response.Notifications));    
         }
         
-        return CreatedAtAction(nameof(CreatePost), response);
+        return CreatedAtAction(nameof(CreatePost), response.Post);
+    }
+    
+    [HttpPut]
+    [Authorize]
+    public async Task<IActionResult> EditPost([FromBody] EditPostRequest request)
+    {
+        var response = await _postService.EditPost(request);
+        if (!response.IsValid())
+        {
+            return NotFound(new ErrorResponse(response.Notifications));    
+        }
+        
+        return Ok(response.Post);
     }
     
     [HttpPost("{postId:int}/like")]
     [Authorize]
     public async Task<IActionResult> LikePost([FromRoute] int postId)
     {
-        await _postService.LikePost(postId);
-        return Ok();
+        var response = await _postService.LikePost(postId);
+        if (!response.IsValid())
+        {
+            return BadRequest(new ErrorResponse(response.Notifications));    
+        }
+        
+        return Ok(response.Post);
     }
     
     [HttpDelete("{postId:int}/unlike")]
     [Authorize]
-    public IActionResult UnlikePost([FromRoute] int postId)
+    public async Task<IActionResult> UnlikePost([FromRoute] int postId)
     {
-        _postService.UnlikePost(postId);
-        return Ok();
+        var response = await _postService.UnlikePost(postId);
+        
+        if (!response.IsValid())
+        {
+            return BadRequest(new ErrorResponse(response.Notifications));    
+        }
+        
+        return Ok(response.Post);
     }
      
     [HttpGet]

@@ -64,4 +64,9 @@ public class PostRepository : IPostRepository
     {
         return _posts.FirstOrDefault(x => x.Id == postId);
     }
+
+    public async Task SaveAll()
+    {
+        await _context.SaveChangesAsync();
+    }
 }
