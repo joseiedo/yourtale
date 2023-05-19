@@ -37,8 +37,7 @@ public class PostRepository : IPostRepository
                 .Where(x => x.Author.Id == userId);
         else
             posts = _posts
-                .Where(x => x.Author.Id == userId
-                            || friends.Contains(x.Author));
+                .Where(x => x.Author.Id == userId || friends.Contains(x.Author));
 
 
         return posts
@@ -46,6 +45,19 @@ public class PostRepository : IPostRepository
             .Skip((page - 1) * take)
             .Take(take)
             .ToListAsync();
+    }
+
+    public Task<List<Post>> GetPostsByUserId(bool isFriendOrCurrentUser,int userId, int page = 1, int take = 6)
+    {
+      
+        return _posts
+            .Where(x => x.Author.Id == userId)
+            .Where(x => x.IsPrivate == false || isFriendOrCurrentUser)
+            .OrderByDescending(x => x.CreatedAt)
+            .Skip((page - 1) * take)
+            .Take(take)
+            .ToListAsync();
+        
     }
 
     public Post? GetById(int postId)

@@ -55,4 +55,15 @@ public class PostController : ControllerBase
     {
         return Ok(await _postService.GetPosts(page, take));
     }
+    
+    [HttpGet("{userId:int}")]
+    [Authorize]
+    public async Task<IActionResult> GetByUserId(
+        [FromRoute] int userId,
+        [FromQuery] int page = 1,
+        [FromQuery] int take = 6
+    )
+    {
+        return Ok(await _postService.GetPostsByUserId(userId, page, take));
+    }
 }

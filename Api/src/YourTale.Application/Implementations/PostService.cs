@@ -97,19 +97,41 @@ public class PostService : IPostService
 
         var posts = await _postRepository.GetPosts(friends, user.Id, page, take);
 
-        var postsDtos = posts.Select(p =>
-        {
-            var postDto = _mapper.Map<PostDto>(p);
-            postDto.IsLiked = _likeRepository.IsLiked(p.Id, user.Id);
-            return postDto;
-        }).ToList();
-        
+
         return new Pageable<PostDto>
         {
-            Content = postsDtos,
+            Content = ListPostsDto(posts, user.Id),
+            Page = page,
+            IsLastPage = posts.Count < take
+        };
+    }
+
+    public async Task<Pageable<PostDto>> GetPostsByUserId(int userId, int page, int take)
+    {
+        var user = _userService.GetAuthenticatedUser();
+        var friends = _friendRequestRepository.GetFriends(user.Id);
+
+        var isFriendOrCurrentUser = userId == user.Id || friends.Any(f => f != null && f.Id == userId);
+        
+        
+        var posts =  await _postRepository.GetPostsByUserId(isFriendOrCurrentUser, userId, page, take);
+
+        return new Pageable<PostDto>
+        {
+            Content = ListPostsDto(posts, userId),
             Page = page,
             IsLastPage = posts.Count < take
         };
     }
     
+    private List<PostDto> ListPostsDto(IEnumerable<Post> posts, int userId)
+    {
+
+        return posts.Select(post =>
+        {
+            var postDto = _mapper.Map<PostDto>(post);
+            postDto.IsLiked = _likeRepository.IsLiked(userId, post.Id);
+            return postDto;
+        }).ToList();
+    }
 }

@@ -13,4 +13,6 @@ public interface IPostService
     void UnlikePost(int postId);
 
     Task<Pageable<PostDto>> GetPosts(int page, int take);
+    
+    Task<Pageable<PostDto>> GetPostsByUserId(int userId, int page, int take);
 }
