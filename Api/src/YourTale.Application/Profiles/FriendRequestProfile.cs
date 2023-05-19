@@ -6,7 +6,6 @@ namespace YourTale.Application.Profiles;
 
 public class FriendRequestProfile : Profile
 {
-
     public FriendRequestProfile()
     {
         CreateMap<FriendRequest, FriendRequestDto>()

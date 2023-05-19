@@ -10,7 +10,4 @@ public interface IUserService
     Task<UserRegisterResponse> RegisterUser(UserRegisterRequest request);
     UserDto GetAuthenticatedUserDetails();
     User GetAuthenticatedUser();
-
-    
-
 }

@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using YourTale.Application.Contracts.Documents.Responses.Core;
 using YourTale.Domain.Contracts.Repositories;
 using YourTale.Domain.Models;
 using YourTale.Infrastructure.Data;
@@ -25,36 +24,27 @@ public class PostRepository : IPostRepository
         return entity;
     }
 
-    
 
-    
     public Task<List<Post>> GetPosts(List<User?> friends,
         int userId,
         int page = 1,
         int take = 6)
     {
-       IQueryable<Post> posts;
-        
+        IQueryable<Post> posts;
+
         if (!friends.Any())
-        {
             posts = _posts
                 .Where(x => x.Author.Id == userId);
-        }
         else
-        {
             posts = _posts
-                .Where(x => x.Author.Id == userId 
+                .Where(x => x.Author.Id == userId
                             || friends.Contains(x.Author));
-        }
 
-        
-        
+
         return posts
-                .OrderByDescending(x => x.CreatedAt)
-                .Skip((page - 1) * take)
-                .Take(take)
-                .ToListAsync();
+            .OrderByDescending(x => x.CreatedAt)
+            .Skip((page - 1) * take)
+            .Take(take)
+            .ToListAsync();
     }
-
-  
 }

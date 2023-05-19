@@ -1,5 +1,4 @@
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using YourTale.Application.Contracts;
 using YourTale.Application.Contracts.Documents.Requests.Post;
 using YourTale.Application.Contracts.Documents.Responses.Core;
@@ -11,13 +10,13 @@ namespace YourTale.Application.Implementations;
 
 public class PostService : IPostService
 {
+    private readonly IFriendRequestRepository _friendRequestRepository;
     private readonly IMapper _mapper;
-    private readonly IFriendRequestRepository _friendRequestRepository; 
     private readonly IPostRepository _postRepository;
     private readonly IUserService _userService;
 
-    public PostService(IMapper mapper, 
-        IPostRepository postRepository, 
+    public PostService(IMapper mapper,
+        IPostRepository postRepository,
         IFriendRequestRepository friendRequestRepository,
         IUserService userService
     )
@@ -31,7 +30,7 @@ public class PostService : IPostService
     public async Task<CreatePostResponse> CreatePost(CreatePostRequest request)
     {
         var response = new CreatePostResponse();
-        var author = _userService.GetAuthenticatedUser(); 
+        var author = _userService.GetAuthenticatedUser();
 
 
         var post = _mapper.Map<Post>(request);
@@ -42,7 +41,7 @@ public class PostService : IPostService
 
         return response;
     }
-   
+
     public async Task<Pageable<PostDto>> GetPosts(int page = 1, int take = 6)
     {
         var user = _userService.GetAuthenticatedUser();
@@ -54,8 +53,7 @@ public class PostService : IPostService
         {
             Content = _mapper.Map<List<PostDto>>(posts),
             Page = page,
-            IsLastPage = posts.Count < take,
+            IsLastPage = posts.Count < take
         };
     }
-    
 }

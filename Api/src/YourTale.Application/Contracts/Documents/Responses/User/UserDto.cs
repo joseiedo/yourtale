@@ -1,5 +1,3 @@
-using YourTale.Application.Contracts.Documents.Responses.FriendRequest;
-
 namespace YourTale.Application.Contracts.Documents.Responses.User;
 
 public class UserDto
@@ -11,5 +9,4 @@ public class UserDto
     public DateTime BirthDate { get; set; }
     public string Cep { get; set; }
     public string Picture { get; set; }
-
 }

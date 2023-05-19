@@ -6,7 +6,7 @@ public class UserRegisterRequest
 {
     public string FullName { get; set; } = Empty;
 
-    public string Email { get; set; }= Empty;
+    public string Email { get; set; } = Empty;
 
     public string Nickname { get; set; } = Empty;
 

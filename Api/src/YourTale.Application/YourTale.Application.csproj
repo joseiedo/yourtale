@@ -7,16 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\YourTale.Domain\YourTale.Domain.csproj" />
+        <ProjectReference Include="..\YourTale.Domain\YourTale.Domain.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
-        <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Contracts\Documents\Requests\Friendship\" />
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1"/>
+        <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0"/>
     </ItemGroup>
 
 </Project>

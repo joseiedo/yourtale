@@ -15,7 +15,7 @@ public class FriendRequestRepository : IFriendRequestRepository
         _context = context;
         _friendRequests = context.FriendRequests;
     }
-    
+
     public async Task<FriendRequest> Add(FriendRequest friendRequest)
     {
         var entity = (await _friendRequests.AddAsync(friendRequest)).Entity;
@@ -29,7 +29,7 @@ public class FriendRequestRepository : IFriendRequestRepository
     {
         return _friendRequests
             .Where(x => x.AcceptedAt != null && (x.UserId == userId || x.FriendId == userId))
-            .Select(x =>  x.UserId == userId ? x.Friend : x.User)
+            .Select(x => x.UserId == userId ? x.Friend : x.User)
             .ToList();
     }
 
@@ -50,10 +50,9 @@ public class FriendRequestRepository : IFriendRequestRepository
 
     public Task<List<FriendRequest>> GetFriendRequests(int userId)
     {
-
         return _friendRequests
-            .Where(x => x.FriendId == userId && x.IsAccepted == false)
-            .ToListAsync()
+                .Where(x => x.FriendId == userId && x.IsAccepted == false)
+                .ToListAsync()
             ;
     }
 }

@@ -12,15 +12,13 @@ namespace YourTale.Application.Implementations;
 
 public class UserService : IUserService
 {
+    private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IMapper _mapper;
     private readonly IUserRepository _userRepository;
-    private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly IFriendRequestRepository _friendRequestRepository;
-    
 
-    public UserService(IMapper mapper, IHttpContextAccessor httpContextAccessor, IFriendRequestRepository friendRequestRepository,  IUserRepository userRepository)
+
+    public UserService(IMapper mapper, IHttpContextAccessor httpContextAccessor, IUserRepository userRepository)
     {
-        _friendRequestRepository = friendRequestRepository;
         _userRepository = userRepository;
         _httpContextAccessor = httpContextAccessor;
         _mapper = mapper;
@@ -30,14 +28,14 @@ public class UserService : IUserService
     {
         var authenticatedUserId =
             _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == "Id")?.Value;
-        
+
         return _userRepository.GetUserById(int.Parse(authenticatedUserId))!;
     }
 
     public UserDto GetAuthenticatedUserDetails()
     {
         var user = GetAuthenticatedUser();
-        var response  = _mapper.Map<UserDto>(user);
+        var response = _mapper.Map<UserDto>(user);
         return response;
     }
 
@@ -74,5 +72,4 @@ public class UserService : IUserService
 
         return response;
     }
-    
 }

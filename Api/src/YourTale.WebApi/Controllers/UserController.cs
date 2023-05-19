@@ -5,8 +5,6 @@ using YourTale.Application.Contracts;
 using YourTale.Application.Contracts.Documents.Requests.Post;
 using YourTale.Application.Contracts.Documents.Requests.User;
 using YourTale.Application.Contracts.Documents.Responses.Core;
-using YourTale.Application.Contracts.Documents.Responses.User;
-using YourTale.Application.Implementations;
 
 namespace WebApplication1.Controllers;
 
@@ -14,12 +12,13 @@ namespace WebApplication1.Controllers;
 [ApiController]
 public class UserController : ControllerBase
 {
+    private readonly IFriendRequestService _friendRequestService;
     private readonly IPostService _postService;
     private readonly TokenService _tokenService;
     private readonly IUserService _userService;
-    private readonly IFriendRequestService _friendRequestService;
 
-    public UserController(IUserService userService, IPostService postService, TokenService tokenService, IFriendRequestService friendRequestService)
+    public UserController(IUserService userService, IPostService postService, TokenService tokenService,
+        IFriendRequestService friendRequestService)
     {
         _userService = userService;
         _tokenService = tokenService;
@@ -79,17 +78,30 @@ public class UserController : ControllerBase
     [Authorize]
     public IActionResult GetAuthenticatedUserDetails()
     {
-        var response =  _userService.GetAuthenticatedUserDetails();
+        var response = _userService.GetAuthenticatedUserDetails();
 
         return Ok(response);
     }
-    
+
     [HttpPost]
     [Route("/friend-requests/{friendId:int}")]
     [Authorize]
     public async Task<IActionResult> AddFriend(int friendId)
     {
-        var response = await _friendRequestService.AddFriend(friendId); 
+        var response = await _friendRequestService.AddFriend(friendId);
+
+        if (!response.IsValid())
+            return BadRequest(new ErrorResponse(response.Notifications));
+
+        return Ok(response.FriendRequest);
+    }
+
+    [HttpPut]
+    [Route("/friend-requests/{friendRequestId:int}")]
+    [Authorize]
+    public async Task<IActionResult> AcceptFriendRequest(int friendRequestId)
+    {
+        var response = await _friendRequestService.AcceptFriendRequest(friendRequestId);
 
         if (!response.IsValid())
             return BadRequest(new ErrorResponse(response.Notifications));
@@ -103,7 +115,7 @@ public class UserController : ControllerBase
     public async Task<IActionResult> GetFriendRequests()
     {
         var response = await _friendRequestService.GetFriendRequests();
-        
+
         return Ok(response);
     }
 }
