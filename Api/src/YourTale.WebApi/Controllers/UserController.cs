@@ -34,7 +34,7 @@ public class UserController : ControllerBase
         var loginResponse = await _userService.ValidateLogin(request);
 
         if (!loginResponse.IsAuthenticated)
-            return BadRequest("Usuário e/ou senha inválidos");
+            return BadRequest(new ErrorResponse(new Notification("Usuário e/ou senha inválidos")));
 
         var token = _tokenService.GenerateToken(loginResponse);
 

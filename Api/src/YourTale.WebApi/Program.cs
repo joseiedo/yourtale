@@ -123,6 +123,8 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.UseCors(b => b.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
 app.Run();
 
 static AsyncRetryPolicy<HttpResponseMessage> CreatePolicy(int retryCount)

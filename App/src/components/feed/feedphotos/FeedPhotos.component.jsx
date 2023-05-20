@@ -10,7 +10,11 @@ export const FeedPhotos = ({page, user, setModalPhoto, setInfinite}) => {
         {id: 2, picture: 'https://source.unsplash.com/random/1000x1000?2'},
         {id: 4, picture: 'https://source.unsplash.com/random/1000x1000?4'},
         {id: 5, picture: 'https://source.unsplash.com/random/1000x1000?5'},
-        {id: 6, picture: 'https://source.unsplash.com/random/1000x1000?6'}];
+        {id: 6, picture: 'https://source.unsplash.com/random/1000x1000?6'},
+        {id: 7, picture: 'https://source.unsplash.com/random/1000x1000?7'},
+        {id: 8, picture: 'https://source.unsplash.com/random/1000x1000?8'},
+        {id: 9, picture: 'https://source.unsplash.com/random/1000x1000?9'},
+    ];
 
     // const { data, loading, error, request } = useFetch();
 
