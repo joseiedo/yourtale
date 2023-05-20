@@ -1,0 +1,26 @@
+.photo:nth-child(2) {
+    grid-column: 2 / 4;
+    grid-row: span 2;
+}
+
+@media (max-width: 40rem) {
+    .photo:nth-child(2) {
+        grid-column: initial;
+        grid-row: initial;
+    }
+}
+
+.photo {
+    display: grid;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+
+.photo > div {
+    grid-area: 1/1;
+}
+
+.photo:hover {
+    filter: brightness(0.8);
+}
