@@ -46,6 +46,24 @@ public class PostService : IPostService
         return response;
     }
 
+    public GetPostDetailsResponse GetPostDetails(int postId)
+    {
+        var response = new GetPostDetailsResponse();
+        var post = _postRepository.GetById(postId);
+        
+        if (post is null)
+        {
+            response.AddNotification(new Notification("Post inválido"));
+            return response;
+        }
+        
+        response.Post = _mapper.Map<PostDto>(post);
+        response.Comments = _mapper.Map<List<CommentDto>>(post.Comments);
+        response.LikesQuantity = post.Likes.Count;
+
+        return response;
+    }
+
     public async Task<EditPostResponse> EditPost(EditPostRequest request)
     {
         var response = new EditPostResponse();
@@ -66,7 +84,31 @@ public class PostService : IPostService
         
         return response;
     }
-    
+
+    public async Task CommentPost(CommentPostRequest request)
+    {
+        var post = _postRepository.GetById(request.PostId);
+
+        if (post is null)
+        {
+            return;
+        }
+        
+        var user = _userService.GetAuthenticatedUser();
+        
+        var comment = new Comment
+        {
+            Description = request.Text,
+            CreatedAt = DateTime.Now,
+            Post = post,
+            User = user
+        };
+        
+        post.Comments.Add(comment);
+        await _postRepository.SaveAll();
+        
+    }
+
 
     public async Task<LikePostResponse> LikePost(int postId)
     {
@@ -127,7 +169,8 @@ public class PostService : IPostService
         
         return response;
     }
-
+    
+    
     public async Task<Pageable<PostDto>> GetPosts(int page, int take)
     {
         var user = _userService.GetAuthenticatedUser();

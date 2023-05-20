@@ -12,6 +12,7 @@ public class PostProfile : Profile
             .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.Now));
 
         CreateMap<Post, PostDto>()
-            .ForMember(dest => dest.Author, opt => opt.MapFrom(src => src.Author));
+            .ForMember(dest => dest.Author, opt => opt.MapFrom(src => src.Author))
+            ;
     }
 }

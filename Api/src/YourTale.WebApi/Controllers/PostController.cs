@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using YourTale.Application.Contracts;
 using YourTale.Application.Contracts.Documents.Requests.Post;
 using YourTale.Application.Contracts.Documents.Responses.Core;
+using YourTale.Application.Contracts.Documents.Responses.Post;
 
 namespace WebApplication1.Controllers;
 
@@ -69,7 +70,21 @@ public class PostController : ControllerBase
         
         return Ok(response.Post);
     }
-     
+    
+    [HttpGet("details/{postId:int}")]
+    [Authorize]
+    public IActionResult GetPostDetails([FromRoute] int postId)
+    {
+        var response =  _postService.GetPostDetails(postId);
+        
+        if (!response.IsValid())
+        {
+            return NotFound(new ErrorResponse(response.Notifications));    
+        }
+        
+        return Ok(response);
+    }
+    
     [HttpGet]
     [Authorize]
     public async Task<IActionResult> Get(
@@ -90,4 +105,14 @@ public class PostController : ControllerBase
     {
         return Ok(await _postService.GetPostsByUserId(userId, page, take));
     }
+    
+    [HttpPost("comments")]
+    [Authorize]
+    public async Task<IActionResult> CommentPost([FromBody] CommentPostRequest request)
+    {
+        await _postService.CommentPost(request);
+        return NoContent();
+    }
+    
+    
 }

@@ -61,6 +61,7 @@ builder.Services.AddDbContext<YourTaleContext>(options =>
 builder.Services.AddAutoMapper(typeof(UserProfile));
 builder.Services.AddAutoMapper(typeof(PostProfile));
 builder.Services.AddAutoMapper(typeof(FriendRequestProfile));
+builder.Services.AddAutoMapper(typeof(CommentProfile));
 
 builder.Services.AddHttpContextAccessor();
 

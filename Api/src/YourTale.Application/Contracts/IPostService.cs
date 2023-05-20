@@ -16,5 +16,9 @@ public interface IPostService
     
     Task<Pageable<PostDto>> GetPostsByUserId(int userId, int page, int take);
 
+    GetPostDetailsResponse GetPostDetails(int postId);
+
     Task<EditPostResponse> EditPost(EditPostRequest request);
+    
+    Task CommentPost(CommentPostRequest request);
 }
