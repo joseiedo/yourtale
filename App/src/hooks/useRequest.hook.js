@@ -10,7 +10,8 @@ export function useRequest() {
             setError(null);
             setLoading(true);
             const response = await request;
-            setData(response);
+            setData(response.data);
+            return response;
         } catch (error) {
             setError(error.response);
             return error

@@ -34,3 +34,7 @@ img {
     }
 }
 
+
+button {
+    border-radius: 0;
+}

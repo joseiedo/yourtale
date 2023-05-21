@@ -4,6 +4,8 @@ import {Input} from "../forms/input/Input.component";
 import {useForm} from "../../hooks/useForm.hook";
 import {UserContext} from "../../UserContext";
 import {Error} from "../helper/error/Error.component";
+import {Navigate} from "react-router-dom";
+import {ROUTES} from "../../router/routes";
 
 export const Login = () => {
     const {login, userLogin, error, loading} = React.useContext(UserContext);
@@ -31,7 +33,7 @@ export const Login = () => {
     }
 
 
-    if (login === true) return <p>Logou</p>
+    if (login === true) return <Navigate to={ROUTES.HOME}/>
     return (
         <section className={styles.login}>
             <div className={styles.forms}>
@@ -52,7 +54,7 @@ export const Login = () => {
                         type={"password"}
                         onChange={handleChange}
                     />
-                    <button aria-busy={loading}>Entrar</button>
+                    <button aria-busy={loading} className="contrast">Entrar</button>
                 </form>
             </div>
         </section>

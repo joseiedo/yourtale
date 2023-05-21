@@ -13,16 +13,14 @@ namespace WebApplication1.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IFriendRequestService _friendRequestService;
-    private readonly IPostService _postService;
     private readonly TokenService _tokenService;
     private readonly IUserService _userService;
 
-    public UserController(IUserService userService, IPostService postService, TokenService tokenService,
+    public UserController(IUserService userService, TokenService tokenService,
         IFriendRequestService friendRequestService)
     {
         _userService = userService;
         _tokenService = tokenService;
-        _postService = postService;
         _friendRequestService = friendRequestService;
     }
 
@@ -70,20 +68,7 @@ public class UserController : ControllerBase
 
         return Ok(response);
     }
-
-
-    [HttpPost]
-    [Route("post")]
-    [Authorize]
-    public async Task<IActionResult> Post([FromBody] CreatePostRequest request)
-    {
-        var response = await _postService.CreatePost(request);
-
-        if (!response.IsValid())
-            return BadRequest(new ErrorResponse(response.Notifications));
-
-        return Ok(response.Post);
-    }
+    
 
 
     [HttpGet]

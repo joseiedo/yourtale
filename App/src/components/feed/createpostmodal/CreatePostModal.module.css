@@ -1,0 +1,8 @@
+.modalWrapper article {
+    width: 100vw;
+}
+
+.modalWrapper article footer {
+    display: flex;
+    gap: 10px;
+}
