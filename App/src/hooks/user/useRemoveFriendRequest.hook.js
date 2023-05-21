@@ -7,8 +7,9 @@ export function useRemoveFriendRequest() {
 
     function removeFriendRequest(token, friendRequestId) {
         return handleRequest(
-            axiosInstance.delete(
-                `${ROUTES_PREFIX.USERS}/friend-requests/${friendRequestId}`,
+            axiosInstance.put(
+                `${ROUTES_PREFIX.USERS}/friend-requests/${friendRequestId}/decline`,
+                {},
                 {
                     headers: {
                         Authorization: `Bearer ${token}`

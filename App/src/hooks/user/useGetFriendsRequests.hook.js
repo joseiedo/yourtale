@@ -7,7 +7,7 @@ export function useGetFriendsRequests() {
 
     function getFriendsRequests(token) {
         return handleRequest(
-            axiosInstance.post(
+            axiosInstance.get(
                 `${ROUTES_PREFIX.USERS}/friend-requests/`,
                 {
                     headers: {

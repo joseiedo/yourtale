@@ -5,12 +5,13 @@ import {ROUTES_PREFIX} from "../../api/_base/routes-prefix.api";
 export function useAcceptFriend() {
     const {data, error, loading, handleRequest} = useRequest();
 
-    function acceptFriend(token, friendRequestId) {
-        return handleRequest(
+    async function acceptFriend(token, friendRequestId) {
+        return await handleRequest(
             axiosInstance.put(
                 `${ROUTES_PREFIX.USERS}/friend-requests/${friendRequestId}`,
+                {},
                 {
-                    header: {
+                    headers: {
                         Authorization: `Bearer ${token}`
                     }
                 }

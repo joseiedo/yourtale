@@ -47,7 +47,8 @@ public class FriendRequestService : IFriendRequestService
         var friendRequest = new FriendRequest
         {
             User = user,
-            Friend = friend
+            Friend = friend,
+            CreatedAt = DateTime.Now
         };
 
         var entity = await _friendRequestRepository.Add(friendRequest);

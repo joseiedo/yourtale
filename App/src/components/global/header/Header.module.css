@@ -2,3 +2,24 @@
 .header {
     border-bottom: 1px solid #ececec;
 }
+
+.header a {
+    color: #000;
+}
+
+.avatarIcon {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    text-transform: capitalize;
+}
+
+.avatarIcon svg {
+    margin-top: 2px;
+}
+
+.logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}

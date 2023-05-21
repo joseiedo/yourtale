@@ -70,7 +70,7 @@ public class FriendRequestRepository : IFriendRequestRepository
     public Task<List<FriendRequest>> GetFriendRequests(int userId)
     {
         return _friendRequests
-                .Where(x => x.FriendId == userId && x.IsAccepted == false)
+                .Where(x => x.FriendId == userId && x.IsAccepted == false && x.RejectedAt == null)
                 .ToListAsync()
             ;
     }
