@@ -60,7 +60,8 @@ public class PostService : IPostService
         response.Post = _mapper.Map<PostDto>(post);
         response.Comments = _mapper.Map<List<CommentDto>>(post.Comments);
         response.LikesQuantity = post.Likes.Count;
-
+        response.Post.IsLiked = _likeRepository.IsLiked(_userService.GetAuthenticatedUser().Id, postId);
+        
         return response;
     }
 

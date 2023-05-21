@@ -19,7 +19,7 @@ export function useGetCurrentUser() {
     }
 
 
-    return {data, error, loading, getCurrentUser}
+    return {user: data, error, loading, getCurrentUser}
 
 
 }

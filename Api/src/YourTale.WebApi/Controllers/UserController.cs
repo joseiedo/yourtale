@@ -120,6 +120,19 @@ public class UserController : ControllerBase
         return Ok(response.FriendRequest);
     }
 
+    [HttpDelete]
+    [Route("friend-requests/{friendRequestId:int}")]
+    [Authorize]
+    public IActionResult RejectFriendRequest(int friendRequestId)
+    {
+        var response =  _friendRequestService.DeclineFriendRequest(friendRequestId);
+
+        if (!response.IsValid())
+            return BadRequest(new ErrorResponse(response.Notifications));
+
+        return Ok(response.FriendRequest);
+    }
+    
     [HttpGet]
     [Route("friend-requests")]
     [Authorize]

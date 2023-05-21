@@ -8,7 +8,7 @@ export function useGetPosts() {
     function getPosts(token, page) {
         return handleRequest(
             axiosInstance.get(
-                `${ROUTES_PREFIX.POSTS}?take=10&page=${page}`,
+                `${ROUTES_PREFIX.POSTS}?take=5&page=${page}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`

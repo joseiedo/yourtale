@@ -2,14 +2,13 @@ import {useRequest} from "../useRequest.hook";
 import {axiosInstance} from "../../api/_base/axios-instance.api";
 import {ROUTES_PREFIX} from "../../api/_base/routes-prefix.api";
 
-export function useLikePost() {
+export function useRemoveFriendRequest() {
     const {data, error, loading, handleRequest} = useRequest();
 
-    function likePost(token, postId) {
+    function removeFriendRequest(token, friendRequestId) {
         return handleRequest(
-            axiosInstance.post(
-                `${ROUTES_PREFIX.POSTS}/${postId}/like`,
-                {},
+            axiosInstance.delete(
+                `${ROUTES_PREFIX.USERS}/friend-requests/${friendRequestId}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -20,7 +19,7 @@ export function useLikePost() {
     }
 
 
-    return {data, error, loading, likePost}
+    return {data, error, loading, removeFriendRequest}
 
 
 }

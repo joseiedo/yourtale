@@ -1,11 +1,27 @@
 import {FeedModal} from "./feedmodal/FeedModal.component";
 import {FeedPhotos} from "./feedphotos/FeedPhotos.component";
 import React from "react";
+import styles from "./feedphotos/FeedPhotos.module.css";
+import {CreatePostModal} from "./createpostmodal/CreatePostModal.component";
+import {useAddPost} from "../../hooks/post/useAddPosts.hook";
 
 export const Feed = ({user}) => {
     const [modalPhoto, setModalPhoto] = React.useState(null);
     const [pages, setPages] = React.useState([1]);
     const [infinite, setInfinite] = React.useState(true);
+    const [isAddingPhost, setIsAddingPost] = React.useState(false);
+    const {addPost} = useAddPost();
+
+    function handleCloseModal() {
+        setIsAddingPost(false);
+    }
+
+    React.useEffect(() => {
+        if (pages.length === 0) {
+            setPages([1])
+        }
+    }, [pages]);
+
 
     React.useEffect(() => {
         let wait = false;
@@ -33,8 +49,34 @@ export const Feed = ({user}) => {
         };
     }, [infinite]);
 
+
+    async function handleCreatePost({
+                                        description,
+                                        picture,
+                                        isPrivate
+                                    }) {
+        const token = localStorage.getItem('token');
+        const response = await addPost(token, {
+            description,
+            picture,
+            isPrivate
+        });
+
+
+        if (response.status === 201) {
+            setInfinite(true);
+            setPages([])
+        }
+    }
+
+
     return (
         <div>
+            <button className={`${styles.button} contrast outline`} onClick={() => setIsAddingPost(true)}>NOVO POST +
+            </button>
+            <CreatePostModal isOpen={isAddingPhost} handleSubmit={handleCreatePost}
+                             handleCloseModal={handleCloseModal}/>
+
             {modalPhoto && (
                 <FeedModal photo={modalPhoto} setModalPhoto={setModalPhoto}/>
             )}

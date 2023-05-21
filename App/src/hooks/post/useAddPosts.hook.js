@@ -5,8 +5,8 @@ import {ROUTES_PREFIX} from "../../api/_base/routes-prefix.api";
 export function useAddPost() {
     const {data, error, loading, handleRequest} = useRequest();
 
-    function addPost(token, {description, picture, isPrivate}) {
-        return handleRequest(
+    async function addPost(token, {description, picture, isPrivate}) {
+        return await handleRequest(
             axiosInstance.post(
                 `${ROUTES_PREFIX.POSTS}`,
                 {

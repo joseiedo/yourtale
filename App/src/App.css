@@ -38,3 +38,8 @@ img {
 button {
     border-radius: 0;
 }
+
+.close {
+    background: transparent;
+    border: none;
+}

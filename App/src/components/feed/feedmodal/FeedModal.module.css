@@ -1,0 +1,74 @@
+.modalWrapper {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 1rem;
+    height: 800px;
+    width: 100vw;
+    max-width: 1200px;
+}
+
+.avatar {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    text-transform: capitalize;
+    margin-bottom: 12px;
+}
+
+.avatar span {
+    color: rgba(0, 0, 0, .5);
+}
+
+.avatar img {
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+}
+
+.modalWrapper form {
+    margin-bottom: 0;
+}
+
+.modalWrapper > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.like {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 14px;
+    margin-top: 14px;
+}
+
+.like svg {
+    height: 60px;
+    width: 60px;
+    cursor: pointer;
+}
+
+.like svg > * {
+    fill: hsl(195, 85%, 41%)
+}
+
+.modalWrapper img {
+    object-fit: cover;
+    max-height: 800px;
+}
+
+
+.comments {
+    overflow-y: auto;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding-top: 12px;
+    padding-bottom: 12px;
+
+}
+
