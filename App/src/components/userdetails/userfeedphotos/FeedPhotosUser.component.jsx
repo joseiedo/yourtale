@@ -1,4 +1,4 @@
-import styles from "./FeedPhotos.module.css";
+import styles from "./FeedPhotosUser.module.css";
 import React from "react";
 import {FeedPhotosItem} from "../../feed/feedphotositem/FeedPhotosItem.component";
 import {useGetPostsFromUser} from "../../../hooks/post/useGetPostsFromUser.hook";

@@ -9,6 +9,13 @@
 .userCard {
     display: flex;
     justify-content: center;
+    gap: 32px;
+    margin-bottom: 32px;
+}
+
+.loading {
+    text-align: center;
+    margin-top: 20px;
 }
 
 .userCard img {
@@ -20,7 +27,12 @@
     margin-bottom: 5px;
 }
 
+
 .userInfo h1 {
+    text-transform: capitalize;
+}
+
+.userInfo h1 + p {
     text-transform: capitalize;
 }
 

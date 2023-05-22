@@ -46,6 +46,15 @@ public class FriendRequestRepository : IFriendRequestRepository
         return await result.ToListAsync();
     }
 
+    public async Task<bool> IsFriendRequestPending(int authenticatedUserId, int userId)
+    {
+        if (authenticatedUserId == userId) return false;
+       
+        return await _friendRequests.AnyAsync(x =>  (x.UserId == userId && x.FriendId == userId ) || (x.FriendId == userId && x.UserId == userId) 
+            && x.AcceptedAt == null);
+        
+    }
+
     public Task<bool> IsFriend(int userId, int friendId)
     {
         return _friendRequests.AnyAsync(x =>  (x.UserId == userId && x.FriendId == friendId ) || (x.FriendId == userId && x.UserId == friendId) 

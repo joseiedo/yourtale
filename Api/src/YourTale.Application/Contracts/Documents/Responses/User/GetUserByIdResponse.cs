@@ -14,4 +14,5 @@ public class GetUserByIdResponse : Notifiable
     
     public bool IsFriend { get; set; }
     public bool IsLoggedUser { get; set; }
+    public bool FriendRequestPending { get; set; }
 }

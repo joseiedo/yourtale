@@ -122,6 +122,7 @@ public class UserService : IUserService
         }
         
         var isFriend = await _friendRequestRepository.IsFriend(authenticatedUser.Id, user.Id);
+        var isFriendRequestPending = await _friendRequestRepository.IsFriendRequestPending(authenticatedUser.Id, user.Id);
         var addressData = await _addressRepository.ConsultCep(user.Cep);
         
         if (addressData is null)
@@ -130,7 +131,8 @@ public class UserService : IUserService
             return response;
         }
         
-        response.IsFriend = isFriend; 
+        response.IsFriend = isFriend;
+        response.FriendRequestPending = isFriendRequestPending;
         response.IsLoggedUser = user.Id == authenticatedUser.Id;
         response.User = _mapper.Map<UserDto>(user);
         response.City = addressData.City;
