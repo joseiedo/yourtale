@@ -38,6 +38,12 @@ public class FriendRequestService : IFriendRequestService
             return response;
         }
 
+        if (friend.Id == user.Id)
+        {
+            response.AddNotification(new Notification("Você não pode adicionar a si mesmo como amigo"));
+            return response;
+        }
+        
         if (_friendRequestRepository.FriendRequestAlreadyExists(user.Id, friendId))
         {
             response.AddNotification(new Notification("Solicitação de amizade já enviada"));
@@ -68,6 +74,12 @@ public class FriendRequestService : IFriendRequestService
             response.AddNotification(new Notification("Solicitação de amizade inválida"));
             return response;
         }
+        
+        if (friendRequest.FriendId != _userService.GetAuthenticatedUser().Id)
+        {
+            response.AddNotification(new Notification("Você não pode aceitar uma solicitação de amizade que não foi enviada para você"));
+            return response;
+        }
 
         if (friendRequest.IsAccepted)
         {
@@ -95,7 +107,12 @@ public class FriendRequestService : IFriendRequestService
             response.AddNotification(new Notification("Solicitação de amizade inválida"));
             return response;
         }
-            
+
+        if (friendRequest.FriendId != _userService.GetAuthenticatedUser().Id)
+        {
+            response.AddNotification(new Notification("Você não pode recusar uma solicitação de amizade que não foi enviada para você"));
+            return response;
+        }
 
         friendRequest.RejectedAt = DateTime.Now;
         _friendRequestRepository.SaveAllChanges();
@@ -127,5 +144,26 @@ public class FriendRequestService : IFriendRequestService
 
     }
 
+    public async Task<RemoveFriendResponse> RemoveFriend(int friendshipId)
+    {
+        var response = new RemoveFriendResponse();
+        var authenticatedUserId = _userService.GetAuthenticatedUser().Id; 
+        var friendship = _friendRequestRepository.GetById(friendshipId);
 
+        if (friendship is null)
+        {
+            response.AddNotification(new Notification("Amizade não encontrada"));
+            return response;
+        }
+            
+        if (friendship.UserId ==  authenticatedUserId || friendship.UserId ==  authenticatedUserId)
+        {
+            response.AddNotification(new Notification("Você não pode remover um amigo que não é seu"));
+            return response;
+        }
+        
+        await _friendRequestRepository.Remove(friendship);
+
+        return response;
+    }
 }

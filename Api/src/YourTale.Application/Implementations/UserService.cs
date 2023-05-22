@@ -123,6 +123,8 @@ public class UserService : IUserService
         
         var isFriend = await _friendRequestRepository.IsFriend(authenticatedUser.Id, user.Id);
         var isFriendRequestPending = await _friendRequestRepository.IsFriendRequestPending(authenticatedUser.Id, user.Id);
+        var isFriendRequestReceived = await _friendRequestRepository.IsFriendRequestReceived(authenticatedUser.Id, user.Id);
+        var friendshipId = await _friendRequestRepository.GetFriendshipId(authenticatedUser.Id, user.Id);
         var addressData = await _addressRepository.ConsultCep(user.Cep);
         
         if (addressData is null)
@@ -133,6 +135,8 @@ public class UserService : IUserService
         
         response.IsFriend = isFriend;
         response.FriendRequestPending = isFriendRequestPending;
+        response.FriendRequestReceived = isFriendRequestReceived;
+        response.FriendshipId = friendshipId;
         response.IsLoggedUser = user.Id == authenticatedUser.Id;
         response.User = _mapper.Map<UserDto>(user);
         response.City = addressData.City;

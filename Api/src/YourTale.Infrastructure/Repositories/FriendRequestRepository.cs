@@ -50,15 +50,37 @@ public class FriendRequestRepository : IFriendRequestRepository
     {
         if (authenticatedUserId == userId) return false;
        
-        return await _friendRequests.AnyAsync(x =>  (x.UserId == userId && x.FriendId == userId ) || (x.FriendId == userId && x.UserId == userId) 
-            && x.AcceptedAt == null);
+        return await _friendRequests.AnyAsync(x => x.UserId == authenticatedUserId && x.FriendId == userId && x.AcceptedAt == null && x.RejectedAt == null);
         
+    }
+
+    public Task<bool> IsFriendRequestReceived(int authenticatedUserId, int userId)
+    {
+        if (authenticatedUserId == userId) return Task.FromResult(false);
+        
+        return _friendRequests.AnyAsync(x => x.UserId == userId && x.FriendId == authenticatedUserId && x.AcceptedAt == null && x.RejectedAt == null); 
+    }
+
+    public async Task<int> GetFriendshipId(int authenticatedUserId, int friendId)
+    {
+        var friendRequest = await _friendRequests.SingleOrDefaultAsync(x =>
+            x.UserId == authenticatedUserId && x.FriendId == friendId ||
+            x.UserId == friendId && x.FriendId == authenticatedUserId);
+
+
+        return friendRequest?.Id ?? 0;
+    }
+
+    public async Task Remove(FriendRequest friendship)
+    {
+        _friendRequests.Remove(friendship);
+        await _context.SaveChangesAsync();
     }
 
     public Task<bool> IsFriend(int userId, int friendId)
     {
         return _friendRequests.AnyAsync(x =>  (x.UserId == userId && x.FriendId == friendId ) || (x.FriendId == userId && x.UserId == friendId) 
-            && x.AcceptedAt != null);
+            && x.AcceptedAt != null && x.IsAccepted == true);
     }
 
     public FriendRequest? GetById(int friendRequestId)

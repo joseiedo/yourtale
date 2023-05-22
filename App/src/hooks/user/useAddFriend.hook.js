@@ -9,6 +9,7 @@ export function useAddFriend() {
         return handleRequest(
             axiosInstance.post(
                 `${ROUTES_PREFIX.USERS}/friend-requests/${friendId}`,
+                {},
                 {
                     headers: {
                         Authorization: `Bearer ${token}`

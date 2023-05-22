@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Polly;
 using Polly.Retry;
+using WebApplication1.Middlewares;
 using WebApplication1.Security;
 using YourTale.Application.Contracts;
 using YourTale.Application.Implementations;
@@ -54,6 +55,7 @@ builder.Services.AddSwaggerGen(option =>
         }
     });
 });
+
 
 
 builder.Services.AddDbContext<YourTaleContext>(options =>
@@ -126,6 +128,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseCors(b => b.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 

@@ -22,10 +22,8 @@ export const Header = () => {
                 <li>
                     {data && <Link to={`${ROUTES.PROFILE}/${data.id}`}>
                         <div className={styles.avatarIcon}>
-
                             <span>{data.fullName}</span>
                             <UserLogo/>
-
                         </div>
                     </Link>
                     }

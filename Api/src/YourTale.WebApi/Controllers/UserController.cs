@@ -133,6 +133,19 @@ public class UserController : ControllerBase
         return Ok(response.FriendRequest);
     }
     
+    [HttpDelete]
+    [Route("friend-requests/{friendshipId:int}/remove")]
+    [Authorize]
+    public async Task<IActionResult> RemoveFriend(int friendshipId)
+    {
+        var response = await _friendRequestService.RemoveFriend(friendshipId);
+
+        if (!response.IsValid())
+            return BadRequest(new ErrorResponse(response.Notifications));
+
+        return NoContent();
+    }
+    
     [HttpGet]
     [Route("friend-requests")]
     [Authorize]

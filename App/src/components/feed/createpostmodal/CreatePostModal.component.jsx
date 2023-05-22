@@ -32,7 +32,7 @@ export const CreatePostModal = ({handleSubmit, isOpen, handleCloseModal}) => {
         <article>
             <form onSubmit={onSubmit}>
                 <Input
-                    label={"Titulo"}
+                    label={"Descrição"}
                     name={"description"}
                     type={"text"}
                     value={formData.description.value}

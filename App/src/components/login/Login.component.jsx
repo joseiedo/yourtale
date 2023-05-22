@@ -52,7 +52,7 @@ export const Login = () => {
                         onChange={handleChange}
                     />
                     <button aria-busy={loading} className="contrast">Entrar</button>
-                    <button aria-busy={loading} className="contrast outline"
+                    <button className="contrast outline"
                             onClick={() => navigate(`${ROUTES.REGISTER}`)}>Cadastrar
                     </button>
                 </form>
