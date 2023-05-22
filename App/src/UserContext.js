@@ -1,6 +1,8 @@
 import React from "react";
 import {axiosInstance} from "./api/_base/axios-instance.api";
 import {ROUTES_PREFIX} from "./api/_base/routes-prefix.api";
+import {useNavigate} from "react-router-dom";
+import {ROUTES} from "./router/routes";
 
 export const UserContext = React.createContext(null);
 
@@ -9,18 +11,17 @@ export const UserStorage = ({children}) => {
     const [login, setLogin] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState(null);
+    const navigate = useNavigate();
 
+    const userLogout = async function () {
+        setData(null);
+        setError(null);
+        setLoading(false);
+        setLogin(false);
+        window.localStorage.removeItem("token");
+        navigate(ROUTES.HOME);
+    }
 
-    // const userLogout = React.useCallback(async function () {
-    //         setData(null);
-    //         setError(null);
-    //         setLoading(false);
-    //         setLogin(false);
-    //         window.localStorage.removeItem("token");
-    //         navigate("/login");
-    //     },
-    //     // [navigate]
-    // );
 
     async function getUser(token) {
         const response = await axiosInstance.get(`${ROUTES_PREFIX.USERS}/me`,
@@ -42,7 +43,6 @@ export const UserStorage = ({children}) => {
             const {token} = response.data;
             window.localStorage.setItem('token', token);
             await getUser(token);
-            // navigate("/home");
         } catch (err) {
             console.log("ERR:", err)
             setError(err.response.data.errors[0].message);
@@ -53,31 +53,28 @@ export const UserStorage = ({children}) => {
 
     }
 
-    // React.useEffect(() => {
-    //
-    //     async function autoLogin() {
-    //         const token = window.localStorage.getItem('token');
-    //         if (token) {
-    //             try {
-    //                 setError(null);
-    //                 setLoading(true);
-    //                 // const { url, options } = TOKEN_VALIDATE_POST(token);
-    //                 // const response = await fetch(url, options);
-    //                 // if (!response.ok) throw new Error('Token inválido');
-    //                 await getUser(token);
-    //             } catch (err) {
-    //                 userLogout();
-    //             } finally {
-    //                 setLoading(false);
-    //             }
-    //         } else {
-    //             setLogin(false);
-    //         }
-    //     }
-    //
-    //     autoLogin();
-    // }, [userLogout]);
-    //
+    React.useEffect(() => {
+
+        async function autoLogin() {
+            const token = window.localStorage.getItem('token');
+            if (token) {
+                try {
+                    setError(null);
+                    setLoading(true);
+                    await getUser(token);
+                } catch (err) {
+                    userLogout();
+                } finally {
+                    setLoading(false);
+                }
+            } else {
+                setLogin(false);
+            }
+        }
+
+        autoLogin();
+    }, []);
+
     return (
         <UserContext.Provider value={{userLogin, data, error, loading, login}}
         >

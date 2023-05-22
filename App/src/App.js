@@ -10,6 +10,7 @@ import {ProtectedRoute} from "./components/helper/ProtectedRoute.component";
 import {SearchUsers} from "./components/searchusers/SearchUsers.component";
 import {SearchFriends} from "./components/searchusers/SearchFriends.component";
 import {UserDetails} from "./components/userdetails/UserDetails.component";
+import {LoginCreate} from "./components/login/LoginCreate.component";
 
 function App() {
     return (
@@ -19,13 +20,16 @@ function App() {
                     <Header/>
                     <div className="App">
                         <Routes>
-                            <Route path={ROUTES.LOGIN} element={<Login/>}/>
+                            <Route path={`${ROUTES.LOGIN}/*`} element={<Login/>}/>
                             <Route path={ROUTES.HOME} element={<ProtectedRoute><Home/></ProtectedRoute>}/>
                             <Route path={ROUTES.SEARCH_USER} element={<ProtectedRoute><SearchUsers/></ProtectedRoute>}/>
                             <Route path={`${ROUTES.PROFILE}/:userId`}
                                    element={<ProtectedRoute><UserDetails/></ProtectedRoute>}/>
                             <Route path={ROUTES.SEARCH_FRIENDS}
                                    element={<ProtectedRoute><SearchFriends/></ProtectedRoute>}/>
+                            <Route path={ROUTES.REGISTER}
+                                   element={<LoginCreate/>}
+                            />
                         </Routes>
                     </div>
                     <Footer/>

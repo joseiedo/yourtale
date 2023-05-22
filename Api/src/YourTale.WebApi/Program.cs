@@ -12,6 +12,7 @@ using WebApplication1.Security;
 using YourTale.Application.Contracts;
 using YourTale.Application.Implementations;
 using YourTale.Application.Profiles;
+using YourTale.Application.Validators.Post;
 using YourTale.Application.Validators.User;
 using YourTale.Domain.Contracts.Repositories;
 using YourTale.Infrastructure.Data;
@@ -77,6 +78,9 @@ builder.Services.AddScoped<TokenService>();
 
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining(typeof(UserRegisterValidator));
+builder.Services.AddValidatorsFromAssemblyContaining(typeof(CommentPostValidator));
+builder.Services.AddValidatorsFromAssemblyContaining(typeof(CreatePostValidator));
+builder.Services.AddValidatorsFromAssemblyContaining(typeof(UserEditValidator));
 
 
 builder.Services.AddHttpClient<IAddressRepository, AddressRepository>(client =>

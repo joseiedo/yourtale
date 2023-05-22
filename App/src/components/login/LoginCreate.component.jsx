@@ -7,7 +7,7 @@ import {Error} from "../helper/error/Error.component";
 import {Navigate, useNavigate} from "react-router-dom";
 import {ROUTES} from "../../router/routes";
 
-export const Login = () => {
+export function LoginCreate() {
     const {login, userLogin, error, loading} = React.useContext(UserContext);
     const navigate = useNavigate();
     const {formData, handleChange} = useForm({
@@ -29,12 +29,11 @@ export const Login = () => {
         }
     }
 
-
     if (login === true) return <Navigate to={ROUTES.HOME}/>
     return (
         <section className={styles.login}>
             <div className={styles.forms}>
-                <h1>Login</h1>
+                <h1>Crie sua conta</h1>
                 <Error error={error}/>
                 <form onSubmit={handleLogin}>
                     <Input
@@ -52,9 +51,6 @@ export const Login = () => {
                         onChange={handleChange}
                     />
                     <button aria-busy={loading} className="contrast">Entrar</button>
-                    <button aria-busy={loading} className="contrast outline"
-                            onClick={() => navigate(`${ROUTES.REGISTER}`)}>Cadastrar
-                    </button>
                 </form>
             </div>
         </section>
