@@ -19,20 +19,18 @@ export const FeedPhotos = ({page, setModalPhoto, setInfinite}) => {
         }
 
         fetchPhotos();
-    }, [page, setInfinite]);
+    }, [page]);
 
     return (
-        <>
-            <ul className={`${styles.feed} animeLeft`}>
-                {data?.content.map((photo) => (
-                    <FeedPhotosItem
-                        key={photo.id}
-                        photo={photo}
-                        setModalPhoto={setModalPhoto}
-                    />
-                ))}
-            </ul>
+        <ul className={`${styles.feed} animeLeft`}>
+            {data?.content.map((photo) => (
+                <FeedPhotosItem
+                    key={photo.id}
+                    photo={photo}
+                    setModalPhoto={setModalPhoto}
+                />
+            ))}
+        </ul>
 
-        </>
     );
 };

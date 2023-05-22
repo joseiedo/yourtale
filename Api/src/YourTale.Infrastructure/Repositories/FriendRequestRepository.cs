@@ -45,7 +45,7 @@ public class FriendRequestRepository : IFriendRequestRepository
 
         return await result.ToListAsync();
     }
-    
+
     public Task<bool> IsFriend(int userId, int friendId)
     {
         return _friendRequests.AnyAsync(x =>  (x.UserId == userId && x.FriendId == friendId ) || (x.FriendId == userId && x.UserId == friendId) 

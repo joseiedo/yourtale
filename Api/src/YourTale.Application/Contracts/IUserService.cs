@@ -1,4 +1,5 @@
 using YourTale.Application.Contracts.Documents.Requests.User;
+using YourTale.Application.Contracts.Documents.Responses.Core;
 using YourTale.Application.Contracts.Documents.Responses.User;
 using YourTale.Domain.Models;
 
@@ -12,5 +13,7 @@ public interface IUserService
     User GetAuthenticatedUser();
     Task<UserEditResponse> EditUser(UserEditRequest request);
     
-    Task<GetUserByIdResponse> GetUserById(int id); 
+    Task<GetUserByIdResponse> GetUserById(int id);
+
+    Task<Pageable<UserDto>> GetUsersByNameOrEmailEquals(string text, int page, int take);
 }

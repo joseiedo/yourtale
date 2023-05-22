@@ -45,4 +45,14 @@ public class UserRepository : IUserRepository
     {
         await _context.SaveChangesAsync();
     }
+
+    public Task<List<User>> GetUsersByFullNameOrEmailEqual(int userId, string text, int page, int take)
+    {
+        return _users
+            .Where(x => x.Id != userId)
+            .Where(x => x.FullName.Contains(text) || x.Email.Contains(text))
+            .Skip((page - 1) * take)
+            .Take(take)
+            .ToListAsync();
+    }
 }

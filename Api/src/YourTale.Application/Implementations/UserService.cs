@@ -140,4 +140,16 @@ public class UserService : IUserService
     }
     
     
+    public async Task<Pageable<UserDto>> GetUsersByNameOrEmailEquals(string text, int page, int take)
+    {
+        var user = GetAuthenticatedUser();
+        var friends = await _userRepository.GetUsersByFullNameOrEmailEqual(user.Id, text, page, take);
+        
+        return new Pageable<UserDto>
+        {
+            Content = _mapper.Map<List<UserDto>>(friends),
+            Page = page,
+            IsLastPage = friends.Count < take
+        };
+    }
 }

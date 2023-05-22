@@ -14,6 +14,7 @@ export const Header = () => {
             <ul>
                 <li><Link to={ROUTES.SEARCH_USER}>Buscar contatos</Link></li>
                 <li><Link to={"/"}>Meus amigos</Link></li>
+                <li><Link to={"/"}>Feed</Link></li>
             </ul>
             <li className={styles.logo}><strong><em>yourtale</em></strong></li>
             <ul>

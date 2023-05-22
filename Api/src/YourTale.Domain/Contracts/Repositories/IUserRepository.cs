@@ -12,4 +12,6 @@ public interface IUserRepository
 
     User? GetUserById(int userId);
     Task SaveAll();
+    
+    Task<List<User>> GetUsersByFullNameOrEmailEqual(int userId, string text, int page, int take);
 }

@@ -155,4 +155,19 @@ public class UserController : ControllerBase
 
         return Ok(response);
     }
+    
+      
+    [HttpGet]
+    [Route("search/")]
+    [Authorize]
+    public async Task<IActionResult> GetUsersByNameOrEmailEquals(
+        [FromQuery] string text = "", 
+        [FromQuery] int page = 1, 
+        [FromQuery] int take = 6)
+    {
+        var response = await _userService.GetUsersByNameOrEmailEquals(text,page,take);
+
+        return Ok(response);
+    }
+   
 }

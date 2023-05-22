@@ -1,0 +1,26 @@
+.section {
+    min-height: 80vh;
+}
+
+.userCard {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+    gap: 8px;
+    padding: 16px 0;
+    border-bottom: 1px solid #ececec;
+}
+
+.userCard h2 {
+    margin-bottom: 0px;
+    text-transform: capitalize;
+}
+
+.userCard p {
+    margin-bottom: 0px;
+}
+
+
+.userCard img {
+    height: 80px;
+}
