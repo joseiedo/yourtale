@@ -1,17 +1,16 @@
 import styles from './SearchUsers.module.css'
-import {useGetUsersByText} from "../../hooks/user/useGetUsersByText.hook";
 import React from "react";
 import {usePagination} from "../../hooks/usePagination";
-import DefaultUserImage from "../../assets/default-picture.jpeg";
 import {UserCard} from "./UserCard.component";
+import {useGetFriends} from "../../hooks/user/useGetFriends.hook";
 
-export const SearchUsers = () => {
+export const SearchFriends = () => {
     const {pages, setInfinite} = usePagination();
     const [search, setSearch] = React.useState('');
 
     return <>
         <section className={`container mainContainer ${styles.section}`}>
-            <h1>Procure por algum usuário</h1>
+            <h1>Procure por algum amigo</h1>
             <input type="search" id="search" name="search" placeholder="Digite um nome ou email"
                    onChange={({target}) => setSearch(target.value)}
                    value={search}
@@ -32,13 +31,13 @@ export const SearchUsers = () => {
 }
 
 function UsersList({page, search, setInfinite}) {
-    const {data, getUsersByText} = useGetUsersByText();
+    const {data, getFriends} = useGetFriends();
     const token = window.localStorage.getItem('token');
 
 
     React.useEffect(() => {
 
-        getUsersByText(token, search, page)
+        getFriends(token, search, page)
 
     }, [page, search])
 
