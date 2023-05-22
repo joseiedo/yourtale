@@ -1,0 +1,29 @@
+.userDetailsSection {
+    min-height: 90vh;
+}
+
+.userCardWrapper {
+    border-bottom: 1px solid #ececec;
+}
+
+.userCard {
+    display: flex;
+    justify-content: center;
+}
+
+.userCard img {
+    height: 320px;
+    width: 320px;
+}
+
+.userInfo p {
+    margin-bottom: 5px;
+}
+
+.userInfo h1 {
+    text-transform: capitalize;
+}
+
+.userInfo > p + p {
+    margin-bottom: 16px;
+}

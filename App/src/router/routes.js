@@ -3,4 +3,5 @@ export const ROUTES = {
     HOME: "/feed",
     SEARCH_USER: "/searchuser",
     SEARCH_FRIENDS: "/searchfriend",
+    PROFILE: "/profile",
 }

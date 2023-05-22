@@ -9,6 +9,7 @@ import {Login} from "./components/login/Login.component";
 import {ProtectedRoute} from "./components/helper/ProtectedRoute.component";
 import {SearchUsers} from "./components/searchusers/SearchUsers.component";
 import {SearchFriends} from "./components/searchusers/SearchFriends.component";
+import {UserDetails} from "./components/userdetails/UserDetails.component";
 
 function App() {
     return (
@@ -21,6 +22,8 @@ function App() {
                             <Route path={ROUTES.LOGIN} element={<Login/>}/>
                             <Route path={ROUTES.HOME} element={<ProtectedRoute><Home/></ProtectedRoute>}/>
                             <Route path={ROUTES.SEARCH_USER} element={<ProtectedRoute><SearchUsers/></ProtectedRoute>}/>
+                            <Route path={`${ROUTES.PROFILE}/:userId`}
+                                   element={<ProtectedRoute><UserDetails/></ProtectedRoute>}/>
                             <Route path={ROUTES.SEARCH_FRIENDS}
                                    element={<ProtectedRoute><SearchFriends/></ProtectedRoute>}/>
                         </Routes>

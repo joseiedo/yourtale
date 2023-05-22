@@ -5,10 +5,10 @@ import {ROUTES_PREFIX} from "../../api/_base/routes-prefix.api";
 export function useGetPostsFromUser() {
     const {data, error, loading, handleRequest} = useRequest();
 
-    function getPostsFromUser(token, page, userId) {
+    function getPostsFromUser(token, page, userId, take = 6) {
         return handleRequest(
             axiosInstance.get(
-                `${ROUTES_PREFIX.POSTS}/${userId}?take=10&page=${page}`,
+                `${ROUTES_PREFIX.POSTS}/${userId}?take=${take}&page=${page}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`

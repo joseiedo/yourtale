@@ -1,0 +1,19 @@
+.feed {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 1rem;
+    justify-items: center;
+}
+
+.button {
+    width: max-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (max-width: 40rem) {
+    .feed {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
