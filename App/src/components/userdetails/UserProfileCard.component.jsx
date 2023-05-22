@@ -7,6 +7,7 @@ import {useEditCurrentUser} from "../../hooks/user/useEditCurrentUser.hook";
 import {useAddFriend} from "../../hooks/user/useAddFriend.hook";
 import {useRemoveFriendRequest} from "../../hooks/user/useRemoveFriendRequest.hook";
 import {useAcceptFriend} from "../../hooks/user/useAcceptFriend.hook";
+import {useRemoveFriend} from "../../hooks/user/useRemoveFriend.hook";
 
 export function UserProfileCard({data, getUserById}) {
     const Location = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -53,6 +54,13 @@ function ProfileButtons({
                             friendshipId
                         }) {
     const [isEditing, setIsEditing] = React.useState(false);
+    const {removeFriend} = useRemoveFriend();
+    const token = localStorage.getItem('token');
+
+    async function handleRemoveFriendship() {
+        await removeFriend(token, friendshipId);
+        getUserById(token, user.id)
+    }
 
 
     if (isLoggedUser) return <>
@@ -60,12 +68,15 @@ function ProfileButtons({
         <EditingUserModal isOpen={isEditing} user={user} getUserById={getUserById}
                           handleCloseModal={() => setIsEditing(false)}/>
     </>
-    if (isFriendRequestPending) return <button className="outline contrast">Cancelar solicitação</button>
-    if (friendRequestReceived) return <FriendRequestButtons getUserById={getUserById} userId={user.id}
+    if (isFriendRequestPending) return <button className="outline contrast" onClick={handleRemoveFriendship}>Cancelar
+        solicitação</button>
+    if (friendRequestReceived) return <FriendRequestButtons getUserById={getUserById}
+                                                            userId={user.id}
                                                             friendshipId={friendshipId}/>
-    if (isFriend) return <button className="outline contrast">Remover amigo</button>
+    if (isFriend) return <button className="outline contrast" onClick={handleRemoveFriendship}>Remover Amizade</button>
     return <SendFriendRequestButton getUserById={getUserById} userId={user?.id}/>
 }
+
 
 function FriendRequestButtons({getUserById, userId, friendshipId}) {
     const {acceptFriend} = useAcceptFriend();

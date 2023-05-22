@@ -23,3 +23,7 @@
     left: 50%;
     transform: translateX(-50%);
 }
+
+.header button {
+    padding: 5px 10px;
+}

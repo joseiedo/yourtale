@@ -134,7 +134,7 @@ public class UserController : ControllerBase
     }
     
     [HttpDelete]
-    [Route("friend-requests/{friendshipId:int}/remove")]
+    [Route("friends/{friendshipId:int}/remove")]
     [Authorize]
     public async Task<IActionResult> RemoveFriend(int friendshipId)
     {

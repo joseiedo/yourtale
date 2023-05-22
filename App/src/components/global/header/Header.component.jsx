@@ -6,7 +6,7 @@ import {Link} from "react-router-dom";
 import {ROUTES} from "../../../router/routes";
 
 export const Header = () => {
-    const {data} = React.useContext(UserContext);
+    const {data, userLogout} = React.useContext(UserContext);
 
     return <header className={styles.header}>
         <nav className="container">
@@ -27,6 +27,9 @@ export const Header = () => {
                         </div>
                     </Link>
                     }
+                </li>
+                <li>
+                    {data && <button className="outline contrast" onClick={userLogout}>Logout</button>}
                 </li>
             </ul>
         </nav>

@@ -10,6 +10,10 @@
     border: 1px solid #ececec;
 }
 
+.homeWrapper {
+    min-height: 80vh;
+}
+
 
 .friendRequestWrapper header {
     padding-bottom: 10px;
