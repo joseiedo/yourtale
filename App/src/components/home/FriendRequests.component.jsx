@@ -30,14 +30,14 @@ export function FriendsRequests() {
         await getFriendsRequests(token)
     }
 
+    if (data?.length === 0) return null
+
     return (
         <article className={styles.friendRequestWrapper}>
             <header>
                 <span aria-busy={loading}>Solicitações de amizade</span>
             </header>
-            {data?.length === 0 ? <p>
-                Você não possui solicitações de amizade no momento.
-            </p> : <ul>
+            <ul>
                 {data?.map(({id, user}) => (
                     <li key={id}>
                         {user.fullName}
@@ -55,7 +55,7 @@ export function FriendsRequests() {
                             </button>
                         </div>
                     </li>))}
-            </ul>}
+            </ul>
         </article>
     )
 }

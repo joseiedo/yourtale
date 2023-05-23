@@ -12,7 +12,7 @@
     align-items: center;
     height: 40px;
     text-transform: capitalize;
-    margin-bottom: 12px;
+    margin-bottom: 18px;
 }
 
 .avatar span {
@@ -23,6 +23,7 @@
     height: 60px;
     width: 60px;
     border-radius: 50%;
+    margin-right: 10px;
 }
 
 .modalWrapper form {
@@ -72,3 +73,15 @@
 
 }
 
+
+.comments img {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+}
+
+.comments > div {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
