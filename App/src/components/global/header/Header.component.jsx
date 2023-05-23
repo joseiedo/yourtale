@@ -17,7 +17,11 @@ export const Header = () => {
                     <li><Link to={ROUTES.HOME}>Feed</Link></li>
                 </ul>
             }
-            <li className={styles.logo}><strong><em>yourtale</em></strong></li>
+            <span>
+
+                <h1><strong><em>yourtale</em></strong></h1>
+
+            </span>
             <ul>
                 <li>
                     {data && <Link to={`${ROUTES.PROFILE}/${data.id}`}>

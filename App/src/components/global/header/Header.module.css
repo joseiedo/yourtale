@@ -19,11 +19,30 @@
 }
 
 .logo {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+
 }
 
 .header button {
     padding: 5px 10px;
+}
+
+
+.header h1 {
+    font-size: 24px;
+}
+
+.header nav {
+    display: flex;
+    align-items: center;
+}
+
+.header nav > span {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+
+}
+
+.header nav h1 {
+    margin-bottom: 0px;
 }
