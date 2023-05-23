@@ -57,7 +57,6 @@ builder.Services.AddSwaggerGen(option =>
 });
 
 
-
 builder.Services.AddDbContext<YourTaleContext>(options =>
     options.UseLazyLoadingProxies().UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -139,7 +138,7 @@ static AsyncRetryPolicy<HttpResponseMessage> CreatePolicy(int retryCount)
 {
     return Policy
         .HandleResult<HttpResponseMessage>(r => !r.IsSuccessStatusCode)
-        .RetryAsync(retryCount, onRetry: (message, retryCount) =>
+        .RetryAsync(retryCount, (message, retryCount) =>
         {
             var msg = $"Retentativa: {retryCount}";
             Console.Out.WriteLineAsync(msg);

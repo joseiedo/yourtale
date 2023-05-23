@@ -15,6 +15,6 @@ public class PostDto
     public bool IsPrivate { get; set; }
 
     public UserDto Author { get; set; }
-    
+
     public bool IsLiked { get; set; }
 }

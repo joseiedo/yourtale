@@ -14,8 +14,6 @@ public interface IFriendRequestRepository
 
     Task<bool> IsFriend(int userId, int friendId);
     Task<List<User?>> GetFriendsByFullNameOrEmailEqual(int userId, string text, int page, int take);
-    Task<bool> IsFriendRequestPending(int authenticatedUserId, int userId);
-    Task<bool> IsFriendRequestReceived(int authenticatedUserId, int userId);
-    Task<int> GetFriendshipId(int authenticatedUserId, int userId);
+    Task<FriendRequest?> GetFriendship(int authenticatedUserId, int userId);
     Task Remove(FriendRequest friendship);
 }

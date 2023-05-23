@@ -5,5 +5,5 @@ namespace YourTale.Application.Contracts.Documents.Responses.Post;
 
 public class LikePostResponse : Notifiable
 {
-    public PostDto? Post { get; set; } 
+    public PostDto? Post { get; set; }
 }

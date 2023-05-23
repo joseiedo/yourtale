@@ -8,12 +8,12 @@ namespace YourTale.Infrastructure.Repositories;
 public class AddressRepository : IAddressRepository
 {
     private readonly HttpClient _httpClient;
-    
+
     public AddressRepository(HttpClient httpClient)
     {
         _httpClient = httpClient;
     }
-    
+
     public async Task<Address?> ConsultCep(string cep)
     {
         var requestUri = $"/ws/{cep}/json";
@@ -31,11 +31,11 @@ public class AddressRepository : IAddressRepository
             var cepResponse = JsonSerializer.Deserialize<CepConsultResponse>(content);
 
             if (cepResponse is null) return null;
-            
+
             return new Address
             {
                 City = cepResponse.Localidade,
-                Uf = cepResponse.Uf,
+                Uf = cepResponse.Uf
             };
         }
         catch (Exception e)
@@ -43,8 +43,5 @@ public class AddressRepository : IAddressRepository
             Console.WriteLine($"Erro na consulta de CEPs: {e}");
             return null;
         }
-
     }
-    
-    
 }

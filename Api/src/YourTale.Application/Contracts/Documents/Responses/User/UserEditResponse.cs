@@ -4,5 +4,5 @@ namespace YourTale.Application.Contracts.Documents.Responses.User;
 
 public class UserEditResponse : Notifiable
 {
-    public UserDto? User { get; set; } 
+    public UserDto? User { get; set; }
 }

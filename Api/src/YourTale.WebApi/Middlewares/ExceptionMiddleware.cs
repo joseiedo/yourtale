@@ -23,5 +23,4 @@ public class ExceptionMiddleware
             await httpContext.Response.WriteAsJsonAsync(new ErrorResponse(new Notification(ex.Message)));
         }
     }
- 
 }

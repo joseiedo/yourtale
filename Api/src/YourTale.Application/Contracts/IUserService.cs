@@ -12,7 +12,7 @@ public interface IUserService
     UserDto GetAuthenticatedUserDetails();
     User GetAuthenticatedUser();
     Task<UserEditResponse> EditUser(UserEditRequest request);
-    
+
     Task<GetUserByIdResponse> GetUserById(int id);
 
     Task<Pageable<UserDto>> GetUsersByNameOrEmailEquals(string text, int page, int take);

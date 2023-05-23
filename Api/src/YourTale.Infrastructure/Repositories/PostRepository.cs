@@ -18,7 +18,7 @@ public class PostRepository : IPostRepository
 
     public async Task<Post> Add(Post post)
     {
-         _posts.Add(post);
+        _posts.Add(post);
         await _context.SaveChangesAsync();
 
         return post;
@@ -47,9 +47,8 @@ public class PostRepository : IPostRepository
             .ToListAsync();
     }
 
-    public Task<List<Post>> GetPostsByUserId(bool isFriendOrCurrentUser,int userId, int page = 1, int take = 6)
+    public Task<List<Post>> GetPostsByUserId(bool isFriendOrCurrentUser, int userId, int page = 1, int take = 6)
     {
-      
         return _posts
             .Where(x => x.Author.Id == userId)
             .Where(x => x.IsPrivate == false || isFriendOrCurrentUser)
@@ -57,7 +56,6 @@ public class PostRepository : IPostRepository
             .Skip((page - 1) * take)
             .Take(take)
             .ToListAsync();
-        
     }
 
     public Post? GetById(int postId)

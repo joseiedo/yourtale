@@ -15,6 +15,6 @@ public interface IFriendRequestService
     Task<List<FriendRequestDto>> GetFriendRequests();
 
     Task<Pageable<UserDto>> GetFriendsByNameOrEmailEquals(string text, int page, int take);
-    
+
     Task<RemoveFriendResponse> RemoveFriend(int friendshipId);
 }

@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Security;
 using YourTale.Application.Contracts;
-using YourTale.Application.Contracts.Documents.Requests.Post;
 using YourTale.Application.Contracts.Documents.Requests.User;
 using YourTale.Application.Contracts.Documents.Responses.Core;
 
@@ -42,7 +41,7 @@ public class UserController : ControllerBase
             token
         });
     }
-    
+
     [HttpGet]
     [Route("{id:int}")]
     [Authorize]
@@ -68,7 +67,6 @@ public class UserController : ControllerBase
 
         return Ok(response);
     }
-    
 
 
     [HttpGet]
@@ -93,7 +91,7 @@ public class UserController : ControllerBase
 
         return Ok(response.User);
     }
-    
+
     [HttpPost]
     [Route("friend-requests/{friendId:int}")]
     [Authorize]
@@ -125,14 +123,14 @@ public class UserController : ControllerBase
     [Authorize]
     public IActionResult RejectFriendRequest(int friendRequestId)
     {
-        var response =  _friendRequestService.DeclineFriendRequest(friendRequestId);
+        var response = _friendRequestService.DeclineFriendRequest(friendRequestId);
 
         if (!response.IsValid())
             return BadRequest(new ErrorResponse(response.Notifications));
 
         return Ok(response.FriendRequest);
     }
-    
+
     [HttpDelete]
     [Route("friends/{friendshipId:int}/remove")]
     [Authorize]
@@ -145,7 +143,7 @@ public class UserController : ControllerBase
 
         return NoContent();
     }
-    
+
     [HttpGet]
     [Route("friend-requests")]
     [Authorize]
@@ -155,32 +153,31 @@ public class UserController : ControllerBase
 
         return Ok(response);
     }
-    
+
     [HttpGet]
     [Route("friends")]
     [Authorize]
     public async Task<IActionResult> GetFriendsByNameOrEmailEquals(
-        [FromQuery] string text = "", 
-        [FromQuery] int page = 1, 
+        [FromQuery] string text = "",
+        [FromQuery] int page = 1,
         [FromQuery] int take = 6)
     {
         var response = await _friendRequestService.GetFriendsByNameOrEmailEquals(text, page, take);
 
         return Ok(response);
     }
-    
-      
+
+
     [HttpGet]
     [Route("search/")]
     [Authorize]
     public async Task<IActionResult> GetUsersByNameOrEmailEquals(
-        [FromQuery] string text = "", 
-        [FromQuery] int page = 1, 
+        [FromQuery] string text = "",
+        [FromQuery] int page = 1,
         [FromQuery] int take = 6)
     {
-        var response = await _userService.GetUsersByNameOrEmailEquals(text,page,take);
+        var response = await _userService.GetUsersByNameOrEmailEquals(text, page, take);
 
         return Ok(response);
     }
-   
 }

@@ -12,11 +12,11 @@ namespace YourTale.Application.Implementations;
 
 public class UserService : IUserService
 {
+    private readonly IAddressRepository _addressRepository;
+    private readonly IFriendRequestRepository _friendRequestRepository;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IMapper _mapper;
     private readonly IUserRepository _userRepository;
-    private readonly IFriendRequestRepository _friendRequestRepository;
-    private readonly IAddressRepository _addressRepository;
 
 
     public UserService(IMapper mapper, IHttpContextAccessor httpContextAccessor, IUserRepository userRepository,
@@ -34,7 +34,6 @@ public class UserService : IUserService
     {
         var authenticatedUserId =
             _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == "Id")?.Value;
-
         return _userRepository.GetUserById(int.Parse(authenticatedUserId!))!;
     }
 
@@ -59,7 +58,7 @@ public class UserService : IUserService
     public async Task<UserRegisterResponse> RegisterUser(UserRegisterRequest request)
     {
         var response = new UserRegisterResponse();
-    
+
         if (await _userRepository.ExistsByEmail(request.Email))
         {
             response.AddNotification(new Notification("Email já cadastrado"));
@@ -73,7 +72,7 @@ public class UserService : IUserService
             response.AddNotification(new Notification("CEP inválido"));
             return response;
         }
-        
+
 
         var user = _mapper.Map<User>(request);
         user.Password = Hash.Md5Hash(request.Password);
@@ -90,22 +89,22 @@ public class UserService : IUserService
     public async Task<UserEditResponse> EditUser(UserEditRequest request)
     {
         var response = new UserEditResponse();
-        
+
         var user = _userRepository.GetUserById(request.UserId);
-        
+
         if (user is null)
         {
             response.AddNotification(new Notification("Usuário inválido"));
             return response;
         }
-        
+
         user.NickName = request.Nickname;
         user.Picture = request.Picture;
 
         await _userRepository.SaveAll();
-        
+
         response.User = _mapper.Map<UserDto>(user);
-        
+
         return response;
     }
 
@@ -120,37 +119,46 @@ public class UserService : IUserService
             response.AddNotification(new Notification("Usuário inválido"));
             return response;
         }
-        
+
         var isFriend = await _friendRequestRepository.IsFriend(authenticatedUser.Id, user.Id);
-        var isFriendRequestPending = await _friendRequestRepository.IsFriendRequestPending(authenticatedUser.Id, user.Id);
-        var isFriendRequestReceived = await _friendRequestRepository.IsFriendRequestReceived(authenticatedUser.Id, user.Id);
-        var friendshipId = await _friendRequestRepository.GetFriendshipId(authenticatedUser.Id, user.Id);
+
+        var friendship = await _friendRequestRepository.GetFriendship(authenticatedUser.Id, user.Id);
+
         var addressData = await _addressRepository.ConsultCep(user.Cep);
-        
+
         if (addressData is null)
         {
-            response.AddNotification(new Notification("Usuário inválido"));
+            response.AddNotification(new Notification("Endereço do Usuário é inválido"));
             return response;
         }
-        
+
         response.IsFriend = isFriend;
-        response.FriendRequestPending = isFriendRequestPending;
-        response.FriendRequestReceived = isFriendRequestReceived;
-        response.FriendshipId = friendshipId;
+
+        if (friendship is not null)
+        {
+            response.FriendRequestPending = friendship.UserId == authenticatedUser.Id &&
+                                            friendship.FriendId == user.Id && friendship.AcceptedAt == null &&
+                                            friendship.RejectedAt == null;
+            response.FriendRequestReceived = friendship.UserId == user.Id &&
+                                             friendship.FriendId == authenticatedUser.Id &&
+                                             friendship.AcceptedAt == null && friendship.RejectedAt == null;
+            response.FriendshipId = friendship.Id;
+        }
+
         response.IsLoggedUser = user.Id == authenticatedUser.Id;
         response.User = _mapper.Map<UserDto>(user);
         response.City = addressData.City;
         response.Uf = addressData.Uf;
-        
+
         return response;
     }
-    
-    
+
+
     public async Task<Pageable<UserDto>> GetUsersByNameOrEmailEquals(string text, int page, int take)
     {
         var user = GetAuthenticatedUser();
         var friends = await _userRepository.GetUsersByFullNameOrEmailEqual(user.Id, text, page, take);
-        
+
         return new Pageable<UserDto>
         {
             Content = _mapper.Map<List<UserDto>>(friends),

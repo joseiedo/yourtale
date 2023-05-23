@@ -11,5 +11,5 @@ public class CommentProfile : Profile
         CreateMap<Comment, CommentDto>()
             .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.User))
             ;
-    } 
+    }
 }
