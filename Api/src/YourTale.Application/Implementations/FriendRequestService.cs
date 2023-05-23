@@ -108,6 +108,12 @@ public class FriendRequestService : IFriendRequestService
             return response;
         }
 
+        if (friendRequest.IsAccepted)
+        {
+            response.AddNotification(new Notification("Amizade já foi aceita."));
+            return response;
+        }
+        
         if (friendRequest.FriendId != _userService.GetAuthenticatedUser().Id)
         {
             response.AddNotification(

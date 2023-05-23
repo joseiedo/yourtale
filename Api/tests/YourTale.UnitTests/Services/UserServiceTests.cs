@@ -245,7 +245,7 @@ public class UserServiceTests
     [Fact]
     public async Task GetUserById_WhenAddresIsInvalid_ShouldReturnNull()
     {
-        
+
         // Arrange
         var user = _userFakers.User.Generate();
         _httpContextAccessor.Setup(s => s.HttpContext).Returns(new DefaultHttpContext()
@@ -275,7 +275,7 @@ public class UserServiceTests
         var user = _userFakers.User.Generate();
         var friends = _userFakers.User.Generate(10);
         var friendsDto = _userFakers.UserDto.Generate(friends.Count);
-        
+
         _httpContextAccessor.Setup(s => s.HttpContext).Returns(new DefaultHttpContext()
         {
             User = new ClaimsPrincipal(new ClaimsIdentity(new[]
@@ -283,22 +283,54 @@ public class UserServiceTests
                 new Claim("Id", user.Id.ToString()),
             }, "mock"))
         });
-        
+
         _userRepository.Setup(s => s.GetUserById(It.IsAny<int>())).Returns((User?)user);
-        _userRepository.Setup(s => s.GetUsersByFullNameOrEmailEqual(user.Id, "", 1, friends.Count)).ReturnsAsync(friends);
-        
-        _mapper.Setup( s=> s.Map<List<UserDto>>(friends)).Returns(friendsDto);
-        
+        _userRepository.Setup(s => s.GetUsersByFullNameOrEmailEqual(user.Id, "", 1, friends.Count))
+            .ReturnsAsync(friends);
+
+        _mapper.Setup(s => s.Map<List<UserDto>>(friends)).Returns(friendsDto);
+
         // Act
         var response = await _userService.GetUsersByNameOrEmailEquals("", 1, friends.Count);
-        
+
         // Assert
         response.Should().BeOfType<Pageable<UserDto>>();
         response.Content.Should().NotBeEmpty();
         response.Content.Count.Should().Be(friends.Count);
-        
+
         _userRepository.Verify(v => v.GetUserById(It.IsAny<int>()), Times.Once);
-        _userRepository.Verify(v => v.GetUsersByFullNameOrEmailEqual(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()), Times.Once);
+        _userRepository.Verify(
+            v => v.GetUsersByFullNameOrEmailEqual(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(),
+                It.IsAny<int>()), Times.Once);
     }
+
+    [Fact]
+    public void GetAuthenticatedUserDetails_WhenUserExists_ShouldReturnUser()
+    {
+        // Arrange
+        var user = _userFakers.User.Generate();
+        var dto = _userFakers.UserDto.Generate();
+
+        _httpContextAccessor.Setup(s => s.HttpContext).Returns(new DefaultHttpContext()
+        {
+            User = new ClaimsPrincipal(new ClaimsIdentity(new[]
+            {
+                new Claim("Id", user.Id.ToString()),
+            }, "mock"))
+        });
+
+        _userRepository.Setup(s => s.GetUserById(It.IsAny<int>())).Returns(user);
+        _mapper.Setup(s => s.Map<UserDto>(user)).Returns(dto);
+
+        // Act
+        var response = _userService.GetAuthenticatedUserDetails();
+
+        // Assert
+        response.Should().BeOfType<UserDto>();
+        response.Should().NotBeNull();
+
+        _userRepository.Verify(v => v.GetUserById(It.IsAny<int>()), Times.Once);
+    }
+    
 
 }
