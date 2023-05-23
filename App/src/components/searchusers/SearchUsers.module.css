@@ -11,6 +11,12 @@
     border-bottom: 1px solid #ececec;
 }
 
+.userCard img {
+    object-fit: cover;
+    width: 80px;
+    height: 80px;
+}
+
 .link {
     color: #000;
 }

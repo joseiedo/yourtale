@@ -1,3 +1,5 @@
+import {Error} from "../../helper/error/Error.component";
+
 export const Input = ({label, type, name, value, onChange, error, onBlur, ...props}) => {
     return (
         <div>
@@ -13,7 +15,7 @@ export const Input = ({label, type, name, value, onChange, error, onBlur, ...pro
                 onChange={onChange}
                 onBlur={onBlur}
             />
-            {error && <p>{error}</p>}
+            <Error error={error}/>
         </div>
     );
 };

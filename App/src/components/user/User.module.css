@@ -1,0 +1,66 @@
+.login {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 100vh;
+    gap: 2rem;
+    margin: 0;
+}
+
+.login::before {
+    display: block;
+    content: "";
+    height: 100%;
+    background: url("../../assets/login.jpg") no-repeat center center;
+    background-size: cover;
+}
+
+.register {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 100vh;
+    gap: 2rem;
+    margin: 0;
+}
+
+.register::before {
+    display: block;
+    content: "";
+    height: 100%;
+    background: url("../../assets/register.jpg") no-repeat center center;
+    background-size: cover;
+}
+
+
+.forms {
+    margin-top: 15vh;
+    max-width: 30rem;
+    padding: 1rem;
+}
+
+
+.register .forms {
+    padding-bottom: 15vh;
+}
+
+.preview {
+    margin-bottom: 18px;
+}
+
+.preview img {
+    width: 300px;
+    height: 300px;
+}
+
+@media (max-width: 40rem) {
+    .login, .register {
+        grid-template-columns: 1fr;
+    }
+
+    .login::before, .register::before {
+        display: none;
+    }
+
+    .forms {
+        max-width: 100%;
+    }
+}

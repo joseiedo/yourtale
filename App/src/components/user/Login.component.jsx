@@ -1,4 +1,4 @@
-import styles from './Login.module.css';
+import styles from './User.module.css';
 import React from "react";
 import {Input} from "../forms/input/Input.component";
 import {useForm} from "../../hooks/useForm.hook";

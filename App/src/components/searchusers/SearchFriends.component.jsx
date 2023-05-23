@@ -15,16 +15,18 @@ export const SearchFriends = () => {
                    onChange={({target}) => setSearch(target.value)}
                    value={search}
             />
-            {
-                pages.map((page) => (
-                    <UsersList
-                        key={page}
-                        page={page}
-                        search={search}
-                        setInfinite={setInfinite}
-                    />
-                ))
-            }
+            <ul className={` animeLeft`}>
+                {
+                    pages.map((page) => (
+                        <UsersList
+                            key={page}
+                            page={page}
+                            search={search}
+                            setInfinite={setInfinite}
+                        />
+                    ))
+                }
+            </ul>
         </section>
     </>
 
@@ -48,13 +50,9 @@ function UsersList({page, search, setInfinite}) {
         }
     }, [data])
 
-    return <ul className={` animeLeft`}>
-        {
-            data?.content.map((user) => (
-                <UserCard key={user.id} user={user}/>
-            ))
-        }
-    </ul>
+    return data?.content.map((user) => (
+        <UserCard key={user.id} user={user}/>
+    ))
 }
 
 

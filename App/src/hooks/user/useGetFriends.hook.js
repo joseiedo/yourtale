@@ -8,7 +8,7 @@ export function useGetFriends() {
     function getFriends(token, text, page) {
         return handleRequest(
             axiosInstance.get(
-                `${ROUTES_PREFIX.USERS}/friends?text=${text}&page=${page}&take=10`,
+                `${ROUTES_PREFIX.USERS}/friends?text=${text}&page=${page}&take=6`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`

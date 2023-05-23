@@ -6,7 +6,7 @@ import {ROUTES} from "../../router/routes";
 
 export function UserCard({user}) {
     return <>
-        <Link to={`${ROUTES.PROFILE}/${user.id}`} className={styles.link}>
+        <Link to={`${ROUTES.PROFILE}/${user.id}`} className={`${styles.link} animeLeft`}>
             <div className={styles.userCard}>
                 <img src={user.picture || DefaultUserImage} alt={user.fullName}/>
                 <div>

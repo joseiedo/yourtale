@@ -37,6 +37,7 @@ export const Feed = ({user}) => {
 
 
         if (response.status === 201) {
+            setIsAddingPost(false);
             setInfinite(true);
             setPages([])
         }

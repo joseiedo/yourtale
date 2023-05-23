@@ -156,7 +156,7 @@ public class FriendRequestService : IFriendRequestService
             return response;
         }
             
-        if (friendship.UserId ==  authenticatedUserId || friendship.UserId ==  authenticatedUserId)
+        if (friendship.UserId != authenticatedUserId && friendship.FriendId != authenticatedUserId)
         {
             response.AddNotification(new Notification("Você não pode remover um amigo que não é seu"));
             return response;

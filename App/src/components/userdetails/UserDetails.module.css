@@ -13,6 +13,9 @@
     margin-bottom: 32px;
 }
 
+.userCard img {
+    object-fit: cover;
+}
 
 .loading {
     text-align: center;

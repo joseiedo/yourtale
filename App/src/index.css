@@ -1,6 +1,5 @@
 
-
 [data-theme=light],
-:root:not([data-theme=dark]){
-  --color: #000;
+:root:not([data-theme=dark]) {
+    --color: #000;
 }

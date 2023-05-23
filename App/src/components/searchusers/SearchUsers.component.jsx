@@ -2,7 +2,6 @@ import styles from './SearchUsers.module.css'
 import {useGetUsersByText} from "../../hooks/user/useGetUsersByText.hook";
 import React from "react";
 import {usePagination} from "../../hooks/usePagination";
-import DefaultUserImage from "../../assets/default-picture.jpeg";
 import {UserCard} from "./UserCard.component";
 
 export const SearchUsers = () => {
@@ -16,16 +15,19 @@ export const SearchUsers = () => {
                    onChange={({target}) => setSearch(target.value)}
                    value={search}
             />
-            {
-                pages.map((page) => (
-                    <UsersList
-                        key={page}
-                        page={page}
-                        search={search}
-                        setInfinite={setInfinite}
-                    />
-                ))
-            }
+            <ul className={` animeLeft`}>
+                {
+                    pages.map((page) => (
+                        <UsersList
+                            key={page}
+                            page={page}
+                            search={search}
+                            setInfinite={setInfinite}
+                        />
+                    ))
+                }
+
+            </ul>
         </section>
     </>
 
@@ -49,13 +51,9 @@ function UsersList({page, search, setInfinite}) {
         }
     }, [data])
 
-    return <ul className={` animeLeft`}>
-        {
-            data?.content.map((user) => (
-                <UserCard key={user.id} user={user}/>
-            ))
-        }
-    </ul>
+    return data?.content.map((user) => (
+        <UserCard key={user.id} user={user}/>
+    ))
 }
 
 

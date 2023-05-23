@@ -1,7 +1,7 @@
 import React from 'react';
 
 const patterns = {
-    cepNumber: /^\d{5}-?\d{3}$/,
+    cep: /^\d{5}-?\d{3}$/,
     email: /^[\w+.]+@\w+\.\w{2,}(?:\.\w{2})?$/,
 }
 
