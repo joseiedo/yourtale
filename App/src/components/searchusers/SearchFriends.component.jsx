@@ -1,19 +1,19 @@
 import styles from './SearchUsers.module.css'
 import React from "react";
-import {usePagination} from "../../hooks/usePagination";
-import {UserCard} from "./UserCard.component";
-import {useGetFriends} from "../../hooks/user/useGetFriends.hook";
+import { usePagination } from "../../hooks/usePagination";
+import { UserCard } from "./UserCard.component";
+import { useGetFriends } from "../../hooks/user/useGetFriends.hook";
 
 export const SearchFriends = () => {
-    const {pages, setInfinite} = usePagination();
+    const { pages, setInfinite } = usePagination();
     const [search, setSearch] = React.useState('');
 
     return <>
         <section className={`container mainContainer ${styles.section}`}>
             <h1>Procure por algum amigo</h1>
             <input type="search" id="search" name="search" placeholder="Digite um nome ou email"
-                   onChange={({target}) => setSearch(target.value)}
-                   value={search}
+                onChange={({ target }) => setSearch(target.value)}
+                value={search}
             />
             <ul className={` animeLeft`}>
                 {
@@ -32,8 +32,8 @@ export const SearchFriends = () => {
 
 }
 
-function UsersList({page, search, setInfinite}) {
-    const {data, getFriends} = useGetFriends();
+function UsersList({ page, search, setInfinite }) {
+    const { data, getFriends } = useGetFriends();
     const token = window.localStorage.getItem('token');
 
 
@@ -44,14 +44,13 @@ function UsersList({page, search, setInfinite}) {
     }, [page, search])
 
     React.useEffect(() => {
-        console.log(data)
         if (data?.isLastPage) {
             setInfinite(false);
         }
     }, [data])
 
     return data?.content.map((user) => (
-        <UserCard key={user.id} user={user}/>
+        <UserCard key={user.id} user={user} />
     ))
 }
 

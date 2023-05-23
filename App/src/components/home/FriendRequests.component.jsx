@@ -1,14 +1,14 @@
 import styles from "./FriendRequests.module.css";
-import {useGetFriendsRequests} from "../../hooks/user/useGetFriendsRequests.hook";
+import { useGetFriendsRequests } from "../../hooks/user/useGetFriendsRequests.hook";
 import React from "react";
 import defaultPicture from '../../assets/default-picture.jpeg';
-import {useAcceptFriend} from "../../hooks/user/useAcceptFriend.hook";
-import {useRemoveFriendRequest} from "../../hooks/user/useRemoveFriendRequest.hook";
+import { useAcceptFriend } from "../../hooks/user/useAcceptFriend.hook";
+import { useRemoveFriendRequest } from "../../hooks/user/useRemoveFriendRequest.hook";
 
 export function FriendsRequests() {
-    const {loading, data, getFriendsRequests} = useGetFriendsRequests();
-    const {acceptFriend} = useAcceptFriend();
-    const {removeFriendRequest} = useRemoveFriendRequest();
+    const { loading, data, getFriendsRequests } = useGetFriendsRequests();
+    const { acceptFriend } = useAcceptFriend();
+    const { removeFriendRequest } = useRemoveFriendRequest();
 
     const token = localStorage.getItem("token");
 
@@ -16,9 +16,6 @@ export function FriendsRequests() {
         getFriendsRequests(token);
     }, []);
 
-    React.useEffect(() => {
-        console.log("DATA:", data)
-    }, [data])
 
     async function handleRemoveFriendRequest(friendShipId) {
         await removeFriendRequest(token, friendShipId);
@@ -38,11 +35,11 @@ export function FriendsRequests() {
                 <span aria-busy={loading}>Solicitações de amizade</span>
             </header>
             <ul>
-                {data?.map(({id, user}) => (
+                {data?.map(({ id, user }) => (
                     <li key={id}>
                         {user.fullName}
                         <div>
-                            <img src={user.picture || defaultPicture} alt={`Foto de ${user.fullName}`}/>
+                            <img src={user.picture || defaultPicture} alt={`Foto de ${user.fullName}`} />
                         </div>
                         <div>
                             <button

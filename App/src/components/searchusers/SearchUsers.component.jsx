@@ -1,19 +1,19 @@
 import styles from './SearchUsers.module.css'
-import {useGetUsersByText} from "../../hooks/user/useGetUsersByText.hook";
+import { useGetUsersByText } from "../../hooks/user/useGetUsersByText.hook";
 import React from "react";
-import {usePagination} from "../../hooks/usePagination";
-import {UserCard} from "./UserCard.component";
+import { usePagination } from "../../hooks/usePagination";
+import { UserCard } from "./UserCard.component";
 
 export const SearchUsers = () => {
-    const {pages, setInfinite} = usePagination();
+    const { pages, setInfinite } = usePagination();
     const [search, setSearch] = React.useState('');
 
     return <>
         <section className={`container mainContainer ${styles.section}`}>
             <h1>Procure por algum usuário</h1>
             <input type="search" id="search" name="search" placeholder="Digite um nome ou email"
-                   onChange={({target}) => setSearch(target.value)}
-                   value={search}
+                onChange={({ target }) => setSearch(target.value)}
+                value={search}
             />
             <ul className={` animeLeft`}>
                 {
@@ -33,8 +33,8 @@ export const SearchUsers = () => {
 
 }
 
-function UsersList({page, search, setInfinite}) {
-    const {data, getUsersByText} = useGetUsersByText();
+function UsersList({ page, search, setInfinite }) {
+    const { data, getUsersByText } = useGetUsersByText();
     const token = window.localStorage.getItem('token');
 
 
@@ -45,14 +45,13 @@ function UsersList({page, search, setInfinite}) {
     }, [page, search])
 
     React.useEffect(() => {
-        console.log(data)
         if (data?.isLastPage) {
             setInfinite(false);
         }
     }, [data])
 
     return data?.content.map((user) => (
-        <UserCard key={user.id} user={user}/>
+        <UserCard key={user.id} user={user} />
     ))
 }
 

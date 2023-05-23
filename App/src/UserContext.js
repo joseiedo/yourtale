@@ -1,12 +1,12 @@
 import React from "react";
-import {axiosInstance} from "./api/_base/axios-instance.api";
-import {ROUTES_PREFIX} from "./api/_base/routes-prefix.api";
-import {useNavigate} from "react-router-dom";
-import {ROUTES} from "./router/routes";
+import { axiosInstance } from "./api/_base/axios-instance.api";
+import { ROUTES_PREFIX } from "./api/_base/routes-prefix.api";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "./router/routes";
 
 export const UserContext = React.createContext(null);
 
-export const UserStorage = ({children}) => {
+export const UserStorage = ({ children }) => {
     const [data, setData] = React.useState(null);
     const [login, setLogin] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
@@ -25,7 +25,7 @@ export const UserStorage = ({children}) => {
 
     async function getUser(token) {
         const response = await axiosInstance.get(`${ROUTES_PREFIX.USERS}/me`,
-            {headers: {Authorization: `Bearer ${token}`}});
+            { headers: { Authorization: `Bearer ${token}` } });
 
         setData(response.data);
         setLogin(true);
@@ -40,11 +40,10 @@ export const UserStorage = ({children}) => {
                 password,
             })
 
-            const {token} = response.data;
+            const { token } = response.data;
             window.localStorage.setItem('token', token);
             await getUser(token);
         } catch (err) {
-            console.log("ERR:", err)
             setError(err.response.data.errors[0].message);
             setLogin(false);
         } finally {
@@ -76,7 +75,7 @@ export const UserStorage = ({children}) => {
     }, []);
 
     return (
-        <UserContext.Provider value={{userLogin, userLogout, data, error, loading, login}}
+        <UserContext.Provider value={{ userLogin, userLogout, data, error, loading, login }}
         >
             {children}
         </UserContext.Provider>
