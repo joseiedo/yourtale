@@ -195,14 +195,14 @@ public class UserServiceTests
             User = user1,
             Friend = user2,
             UserId = user1.Id,
-            FriendId = user2.Id,
+            FriendId = user2.Id
         };
 
-        _httpContextAccessor.Setup(s => s.HttpContext).Returns(new DefaultHttpContext()
+        _httpContextAccessor.Setup(s => s.HttpContext).Returns(new DefaultHttpContext
         {
             User = new ClaimsPrincipal(new ClaimsIdentity(new[]
             {
-                new Claim("Id", user1.Id.ToString()),
+                new Claim("Id", user1.Id.ToString())
             }, "mock"))
         });
 
@@ -224,11 +224,11 @@ public class UserServiceTests
     public async Task GetUserById_WhenuserDontExists_ShouldReturnNull()
     {
         // Arrange
-        _httpContextAccessor.Setup(s => s.HttpContext).Returns(new DefaultHttpContext()
+        _httpContextAccessor.Setup(s => s.HttpContext).Returns(new DefaultHttpContext
         {
             User = new ClaimsPrincipal(new ClaimsIdentity(new[]
             {
-                new Claim("Id", "1"),
+                new Claim("Id", "1")
             }, "mock"))
         });
         _userRepository.Setup(s => s.GetUserById(It.IsAny<int>())).Returns((User?)null);
@@ -245,14 +245,13 @@ public class UserServiceTests
     [Fact]
     public async Task GetUserById_WhenAddresIsInvalid_ShouldReturnNull()
     {
-
         // Arrange
         var user = _userFakers.User.Generate();
-        _httpContextAccessor.Setup(s => s.HttpContext).Returns(new DefaultHttpContext()
+        _httpContextAccessor.Setup(s => s.HttpContext).Returns(new DefaultHttpContext
         {
             User = new ClaimsPrincipal(new ClaimsIdentity(new[]
             {
-                new Claim("Id", user.Id.ToString()),
+                new Claim("Id", user.Id.ToString())
             }, "mock"))
         });
         _userRepository.Setup(s => s.GetUserById(It.IsAny<int>())).Returns((User?)user);
@@ -276,11 +275,11 @@ public class UserServiceTests
         var friends = _userFakers.User.Generate(10);
         var friendsDto = _userFakers.UserDto.Generate(friends.Count);
 
-        _httpContextAccessor.Setup(s => s.HttpContext).Returns(new DefaultHttpContext()
+        _httpContextAccessor.Setup(s => s.HttpContext).Returns(new DefaultHttpContext
         {
             User = new ClaimsPrincipal(new ClaimsIdentity(new[]
             {
-                new Claim("Id", user.Id.ToString()),
+                new Claim("Id", user.Id.ToString())
             }, "mock"))
         });
 
@@ -311,11 +310,11 @@ public class UserServiceTests
         var user = _userFakers.User.Generate();
         var dto = _userFakers.UserDto.Generate();
 
-        _httpContextAccessor.Setup(s => s.HttpContext).Returns(new DefaultHttpContext()
+        _httpContextAccessor.Setup(s => s.HttpContext).Returns(new DefaultHttpContext
         {
             User = new ClaimsPrincipal(new ClaimsIdentity(new[]
             {
-                new Claim("Id", user.Id.ToString()),
+                new Claim("Id", user.Id.ToString())
             }, "mock"))
         });
 
@@ -331,6 +330,4 @@ public class UserServiceTests
 
         _userRepository.Verify(v => v.GetUserById(It.IsAny<int>()), Times.Once);
     }
-    
-
 }

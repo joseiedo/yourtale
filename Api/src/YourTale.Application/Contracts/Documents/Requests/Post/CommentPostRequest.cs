@@ -1,6 +1,6 @@
 using static System.String;
 
-namespace YourTale.Application.Contracts.Documents.Responses.Post;
+namespace YourTale.Application.Contracts.Documents.Requests.Post;
 
 public class CommentPostRequest
 {

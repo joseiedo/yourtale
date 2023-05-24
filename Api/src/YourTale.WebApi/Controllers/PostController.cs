@@ -20,6 +20,8 @@ public class PostController : ControllerBase
 
     [HttpPost]
     [Authorize]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(PostDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponse))]
     public async Task<IActionResult> CreatePost([FromBody] CreatePostRequest request)
     {
         var response = await _postService.CreatePost(request);
@@ -30,6 +32,8 @@ public class PostController : ControllerBase
 
     [HttpPut]
     [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PostDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponse))]
     public async Task<IActionResult> EditPost([FromBody] EditPostRequest request)
     {
         var response = await _postService.EditPost(request);
@@ -38,8 +42,11 @@ public class PostController : ControllerBase
         return Ok(response.Post);
     }
 
-    [HttpPost("{postId:int}/like")]
+    [HttpPost]
+    [Route("{postId:int}/like")]
     [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PostDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponse))]
     public async Task<IActionResult> LikePost([FromRoute] int postId)
     {
         var response = await _postService.LikePost(postId);
@@ -48,8 +55,11 @@ public class PostController : ControllerBase
         return Ok(response.Post);
     }
 
-    [HttpDelete("{postId:int}/unlike")]
+    [HttpDelete]
+    [Route("{postId:int}/unlike")]
     [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PostDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponse))]
     public async Task<IActionResult> UnlikePost([FromRoute] int postId)
     {
         var response = await _postService.UnlikePost(postId);
@@ -59,8 +69,11 @@ public class PostController : ControllerBase
         return Ok(response.Post);
     }
 
-    [HttpGet("details/{postId:int}")]
+    [HttpGet]
+    [Route("details/{postId:int}")]
     [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetPostDetailsResponse))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponse))]
     public IActionResult GetPostDetails([FromRoute] int postId)
     {
         var response = _postService.GetPostDetails(postId);
@@ -72,6 +85,7 @@ public class PostController : ControllerBase
 
     [HttpGet]
     [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Pageable<PostDto>))]
     public async Task<IActionResult> Get(
         [FromQuery] int page = 1,
         [FromQuery] int take = 6
@@ -80,8 +94,10 @@ public class PostController : ControllerBase
         return Ok(await _postService.GetPosts(page, take));
     }
 
-    [HttpGet("{userId:int}")]
+    [HttpGet]
+    [Route("{userId:int}")]
     [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Pageable<PostDto>))]
     public async Task<IActionResult> GetByUserId(
         [FromRoute] int userId,
         [FromQuery] int page = 1,
@@ -91,8 +107,10 @@ public class PostController : ControllerBase
         return Ok(await _postService.GetPostsByUserId(userId, page, take));
     }
 
-    [HttpPost("comments")]
+    [HttpPost]
+    [Route("comments")]
     [Authorize]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> CommentPost([FromBody] CommentPostRequest request)
     {
         await _postService.CommentPost(request);

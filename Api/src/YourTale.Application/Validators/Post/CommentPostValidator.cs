@@ -1,5 +1,5 @@
 using FluentValidation;
-using YourTale.Application.Contracts.Documents.Responses.Post;
+using YourTale.Application.Contracts.Documents.Requests.Post;
 
 namespace YourTale.Application.Validators.Post;
 

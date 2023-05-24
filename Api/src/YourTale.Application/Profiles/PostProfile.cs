@@ -1,5 +1,6 @@
 using AutoMapper;
 using YourTale.Application.Contracts.Documents.Requests.Post;
+using YourTale.Application.Contracts.Documents.Responses.Post;
 using YourTale.Domain.Models;
 
 namespace YourTale.Application.Profiles;

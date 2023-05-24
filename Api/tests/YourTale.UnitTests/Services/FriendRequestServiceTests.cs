@@ -14,13 +14,13 @@ namespace YourTale.UnitTests.Services;
 
 public class FriendRequestServiceTests
 {
+    private readonly FriendRequestFaker _friendRequestFaker = new();
+    private readonly Mock<IFriendRequestRepository> _friendRequestRepository = new();
     private readonly IFriendRequestService _friendRequestService;
     private readonly Mock<IMapper> _mapper = new();
+    private readonly UserFakers _userFakers = new();
     private readonly Mock<IUserRepository> _userRepository = new();
     private readonly Mock<IUserService> _userService = new();
-    private readonly Mock<IFriendRequestRepository> _friendRequestRepository = new();
-    private readonly UserFakers _userFakers = new();
-    private readonly FriendRequestFaker _friendRequestFaker = new();
 
 
     public FriendRequestServiceTests()
@@ -152,7 +152,7 @@ public class FriendRequestServiceTests
     {
         // Arrange
         const int searchedId = 1;
-        var friendRequest = new FriendRequest()
+        var friendRequest = new FriendRequest
         {
             FriendId = 1
         };
@@ -178,7 +178,7 @@ public class FriendRequestServiceTests
     {
         // Arrange
         const int searchedId = 1;
-        var friendRequest = new FriendRequest()
+        var friendRequest = new FriendRequest
         {
             FriendId = 1,
             IsAccepted = true
@@ -205,9 +205,9 @@ public class FriendRequestServiceTests
         // Arrange
         const int searchedId = 1;
         var dto = _friendRequestFaker.FriendRequestDto.Generate();
-        var friendRequest = new FriendRequest()
+        var friendRequest = new FriendRequest
         {
-            FriendId = 1,
+            FriendId = 1
         };
         var user = _userFakers.User.RuleFor(x => x.Id, 1).Generate();
 
@@ -247,7 +247,7 @@ public class FriendRequestServiceTests
         // Arrange
         const int searchedId = 1;
 
-        var friendRequest = new FriendRequest()
+        var friendRequest = new FriendRequest
         {
             FriendId = 1,
             IsAccepted = true
@@ -268,9 +268,9 @@ public class FriendRequestServiceTests
     {
         // Arrange
         const int searchedId = 1;
-        var friendRequest = new FriendRequest()
+        var friendRequest = new FriendRequest
         {
-            FriendId = 1,
+            FriendId = 1
         };
         var user = _userFakers.User.RuleFor(x => x.Id, 2).Generate();
 
@@ -291,9 +291,9 @@ public class FriendRequestServiceTests
         // Arrange
         const int searchedId = 1;
         var dto = _friendRequestFaker.FriendRequestDto.Generate();
-        var friendRequest = new FriendRequest()
+        var friendRequest = new FriendRequest
         {
-            FriendId = 1,
+            FriendId = 1
         };
         var user = _userFakers.User.RuleFor(x => x.Id, 1).Generate();
 
@@ -379,7 +379,7 @@ public class FriendRequestServiceTests
         _friendRequestRepository.Verify(v => v.Remove(It.IsAny<FriendRequest>()), Times.Never);
     }
 
-    
+
     [Fact]
     public async Task RemoveFriend_WhenFriendshipIsNotOfCurrentUser_ShouldReturnNotifications()
     {
@@ -404,7 +404,7 @@ public class FriendRequestServiceTests
 
         _friendRequestRepository.Verify(v => v.Remove(It.IsAny<FriendRequest>()), Times.Never);
     }
-    
+
     [Fact]
     public async Task RemoveFriend_WhenFriendshipExists_ShouldNotReturnNotifications()
     {

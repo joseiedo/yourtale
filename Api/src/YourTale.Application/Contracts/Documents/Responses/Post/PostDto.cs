@@ -1,6 +1,6 @@
 using YourTale.Application.Contracts.Documents.Responses.User;
 
-namespace YourTale.Application.Contracts.Documents.Requests.Post;
+namespace YourTale.Application.Contracts.Documents.Responses.Post;
 
 public class PostDto
 {

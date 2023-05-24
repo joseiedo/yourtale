@@ -38,39 +38,13 @@ public class FriendRequestRepository : IFriendRequestRepository
         var result = _friendRequests
             .Where(x => x.AcceptedAt != null && (x.UserId == userId || x.FriendId == userId))
             .Where(x => x.UserId == userId
-                ? x.Friend!.FullName.Contains(text) || x.Friend.Email.Contains(text)
-                : x.User!.FullName.Contains(text) || x.User.Email.Contains(text))
+                ? x.Friend!.FullName.ToLower().Contains(text.ToLower()) || x.Friend.Email.ToLower().Contains(text.ToLower())
+                : x.User!.FullName.ToLower().Contains(text.ToLower()) || x.User.Email.ToLower().Contains(text.ToLower()))
             .Select(x => x.UserId == userId ? x.Friend : x.User)
             .Skip((page - 1) * take)
             .Take(take);
 
         return await result.ToListAsync();
-    }
-
-    public async Task<bool> IsFriendRequestPending(int authenticatedUserId, int userId)
-    {
-        if (authenticatedUserId == userId) return false;
-
-        return await _friendRequests.AnyAsync(x =>
-            x.UserId == authenticatedUserId && x.FriendId == userId && x.AcceptedAt == null && x.RejectedAt == null);
-    }
-
-    public Task<bool> IsFriendRequestReceived(int authenticatedUserId, int userId)
-    {
-        if (authenticatedUserId == userId) return Task.FromResult(false);
-
-        return _friendRequests.AnyAsync(x =>
-            x.UserId == userId && x.FriendId == authenticatedUserId && x.AcceptedAt == null && x.RejectedAt == null);
-    }
-
-    public async Task<int> GetFriendshipId(int authenticatedUserId, int friendId)
-    {
-        var friendRequest = await _friendRequests.SingleOrDefaultAsync(x =>
-            (x.UserId == authenticatedUserId && x.FriendId == friendId) ||
-            (x.UserId == friendId && x.FriendId == authenticatedUserId));
-
-
-        return friendRequest?.Id ?? 0;
     }
 
     public async Task<FriendRequest?> GetFriendship(int authenticatedUserId, int friendId)
@@ -115,5 +89,31 @@ public class FriendRequestRepository : IFriendRequestRepository
                 .Where(x => x.FriendId == userId && x.IsAccepted == false && x.RejectedAt == null)
                 .ToListAsync()
             ;
+    }
+
+    public async Task<bool> IsFriendRequestPending(int authenticatedUserId, int userId)
+    {
+        if (authenticatedUserId == userId) return false;
+
+        return await _friendRequests.AnyAsync(x =>
+            x.UserId == authenticatedUserId && x.FriendId == userId && x.AcceptedAt == null && x.RejectedAt == null);
+    }
+
+    public Task<bool> IsFriendRequestReceived(int authenticatedUserId, int userId)
+    {
+        if (authenticatedUserId == userId) return Task.FromResult(false);
+
+        return _friendRequests.AnyAsync(x =>
+            x.UserId == userId && x.FriendId == authenticatedUserId && x.AcceptedAt == null && x.RejectedAt == null);
+    }
+
+    public async Task<int> GetFriendshipId(int authenticatedUserId, int friendId)
+    {
+        var friendRequest = await _friendRequests.SingleOrDefaultAsync(x =>
+            (x.UserId == authenticatedUserId && x.FriendId == friendId) ||
+            (x.UserId == friendId && x.FriendId == authenticatedUserId));
+
+
+        return friendRequest?.Id ?? 0;
     }
 }

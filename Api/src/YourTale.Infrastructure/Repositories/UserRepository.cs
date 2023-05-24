@@ -50,7 +50,7 @@ public class UserRepository : IUserRepository
     {
         return _users
             .Where(x => x.Id != userId)
-            .Where(x => x.FullName.Contains(text) || x.Email.Contains(text))
+            .Where(x => x.FullName.ToLower().Contains(text.ToLower()) || x.Email.ToLower().Contains(text.ToLower()))
             .Skip((page - 1) * take)
             .Take(take)
             .ToListAsync();

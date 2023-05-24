@@ -163,7 +163,7 @@ function EditingUserModal({isOpen, user, handleCloseModal, getUserById}) {
                     </div>
                 }
 
-                <button className="contrast" type="submit">Postar</button>
+                <button className="contrast" type="submit">Confirmar</button>
                 <button className="contrast outline" type="button" key="CANCEL" onClick={handleCloseModal}>Cancelar
                 </button>
             </form>
