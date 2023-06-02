@@ -26,6 +26,7 @@ public class UserController : ControllerBase
         _friendRequestService = friendRequestService;
     }
 
+    
     [HttpPost]
     [Route("login")]
     [AllowAnonymous]
