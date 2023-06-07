@@ -10,4 +10,4 @@ Type `dotnet run` to run the backend.
 
 Have fun!
 
-This project was made with .NET following Onion Architecture, Unit Tests, Automapper, FluentValidation and Reactjs with axios.
+This project was made with .NET having Unit Tests, Automapper, FluentValidation following Onion Architecture and Reactjs with axios.
