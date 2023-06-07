@@ -7,6 +7,7 @@ Type `npm install && npm start` to run the front end.
 
 Go to `Api/`
 Type `dotnet run` to run the backend.
+The swagger is in the endpoint  `/swagger/index.html`.
 
 Have fun!
 
