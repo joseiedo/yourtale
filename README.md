@@ -1,5 +1,4 @@
 # yourtale
-Social network for photographers.
 
 # Steps
 Go to `App/`
